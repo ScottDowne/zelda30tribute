@@ -104,7 +104,7 @@ function buildVertexBuffer(obj) {
     }
   }
   str.push(']);');
-  $('output').value = str.join('');
+  $('output').textContent = str.join('');
   
   document.body.innerHTML += '&lt;-- Now copy/paste this result into' +
       ' www/js/overworldbuffer.js';

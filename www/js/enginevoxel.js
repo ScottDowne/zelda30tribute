@@ -21,17 +21,17 @@ ace.EngineVoxel = function(divId, opt_settings) {
    * The div we're rendering everything into.
    */
   this.document = settings['document'] || document;
-  
+
   /**
    * The div we're rendering everything into.
    */
   this.div = this.document.getElementById(divId);
-  
+
   /**
    * The "native" width of the game canvas.
    */
   this.width = window.innerWidth;
-  
+
   /**
    * The "native" height of the game canvas.
    */
@@ -195,16 +195,16 @@ ace.EngineVoxel.prototype.drawLight = function(lightImg, worldX, worldY, size, a
 
 	var dX = worldX - avatarRoomOriginX;
 	var dY = worldY - avatarRoomOriginY;
-	
+
 	var x = 128 + dX;
 	var y = 384 - dY;
-	
+
 	if (alpha === undefined) {
 	  alpha = 1;
 	}
 	alpha = Math.min(1, alpha);
 	alpha = Math.max(0, alpha);
-	
+
 	var rotation = rotation || 0;
   this.lightMapCtx_.save();
   this.lightMapCtx_.translate(x, y);
@@ -233,15 +233,15 @@ ace.EngineVoxel.prototype.clearLightMap = function() {
       var distanceFromRoomEdgeY = Math.abs(game.avatar.y - Math.round(game.avatar.y/176)*176);
       var distanceFromBottom = Math.max(0, game.avatar.y - 16);
       var distanceFromRoomEdge = Math.min(distanceFromRoomEdgeX, distanceFromRoomEdgeY, distanceFromBottom);
-      
+
       var zone = 16;
-      
+
       var c = 128 - Math.max(0, zone - distanceFromRoomEdge) * (128/zone);
       this.lightMapCtx_.fillStyle = 'rgb(' + c + ',' + c + ',' + c + ')';
       this.lightMapCtx_.fillRect(128, 128, 256, 256);
       this.lightMapCtx_.drawImage($('lightmap'), ace.LIGHT_MAP_WIDTH / 4,
           ace.LIGHT_MAP_WIDTH / 4, ace.LIGHT_MAP_WIDTH / 2, ace.LIGHT_MAP_WIDTH / 2);
-		  
+
     } else {
     	this.lightMapCtx_.fillStyle = 'rgb(128, 128, 128)';
   		this.lightMapCtx_.fillRect(0, 0, ace.LIGHT_MAP_WIDTH, ace.LIGHT_MAP_HEIGHT);
@@ -253,7 +253,7 @@ ace.EngineVoxel.prototype.clearLightMap = function() {
 /**
  * Handles the next frame. Tick!
  */
-ace.EngineVoxel.prototype.onTick = function(refreshPick) {    
+ace.EngineVoxel.prototype.onTick = function(refreshPick) {
 
 	// Tell the shader where the avatar is, for relative light
 	// map reads.
@@ -267,7 +267,7 @@ ace.EngineVoxel.prototype.onTick = function(refreshPick) {
   gl.uniform1f(this.uSpriteIdLoc, -1);
   mat4.identity(this.uOffsetTransform_);
   gl.uniformMatrix4fv(this.uOffsetLoc, false, this.uOffsetTransform_);
-  
+
   // The door triangles are stuck on the back end of the world buffer.
   var worldBufferLength = ace.overWorldBufferData_.length - 32;
   gl.drawArrays(gl.TRIANGLES, 0, worldBufferLength / this.vertexStride_);
@@ -341,7 +341,7 @@ ace.EngineVoxel.prototype.onMouseWheel = function(e) {
   } else {
     this.cameraDistance_ *= .8;
   }
-  
+
   e.preventDefault();
 };
 
@@ -404,13 +404,13 @@ ace.EngineVoxel.prototype.setupWebGL_ = function() {
                                                                this.voxelSpriteSize_,
                                                                this.voxelSpriteSize_);
 
-  
+
   gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPosBuffer_);
   gl.bufferData(gl.ARRAY_BUFFER, this.vertices_, gl.STATIC_DRAW);
 
 
 
-  
+
   var vs = document.getElementById('vshader').textContent;
   var fs = document.getElementById('fshader').textContent;
   this.program = this.makeProgram(gl, vs, fs);
@@ -419,7 +419,7 @@ ace.EngineVoxel.prototype.setupWebGL_ = function() {
   this.registerVoxelSprite('boulder', 'img/sprite_boulder.png');
   this.registerVoxelSprite('woodensword', 'img/sprite_woodensword.png');
   this.registerVoxelSprite('itemwoodensword', 'img/sprites2/item_woodensword.png');
-  
+
   this.registerVoxelSprite('lockeddoor', 'img/sprites2/lockeddoor.png');
   this.registerVoxelSprite('lockeddoortop', 'img/sprites2/lockeddoortop.png');
   this.registerVoxelSprite('barreddoor', 'img/sprites2/barreddoor.png');
@@ -455,6 +455,7 @@ ace.EngineVoxel.prototype.setupWebGL_ = function() {
   this.registerVoxelSprite('forest_rock_br', 'img/forest_rock_br.png');
 
   this.registerVoxelSprite('forest_rock_t', 'img/forest_rock_t.png');
+  this.registerVoxelSprite('forest_rock', 'img/forest_rock.png');
   this.registerVoxelSprite('forest_rock_tl', 'img/forest_rock_tl.png');
   this.registerVoxelSprite('forest_rock_tr', 'img/forest_rock_tr.png');
 
@@ -473,10 +474,10 @@ ace.EngineVoxel.prototype.setupWebGL_ = function() {
   this.registerVoxelSprite('ow_water_tl', 'img/ow_water_tl.png');
   this.registerVoxelSprite('ow_water_tr', 'img/ow_water_tr.png');
   this.registerVoxelSprite('ow_water_bl', 'img/ow_water_bl.png');
-  this.registerVoxelSprite('ow_water_br', 'img/ow_water_br.png'); 
-  
+  this.registerVoxelSprite('ow_water_br', 'img/ow_water_br.png');
+
   this.registerVoxelSprite('ow_water_r', 'img/ow_water_r.png');
-  
+
   this.registerVoxelSprite('grave_bush', 'img/grave_bush.png');
   this.registerVoxelSprite('grave_grave', 'img/grave_grave.png');
   this.registerVoxelSprite('grave_knight', 'img/grave_knight.png');
@@ -564,7 +565,7 @@ ace.EngineVoxel.prototype.setupWebGL_ = function() {
 	this.registerVoxelSprite('fire', 'img/sprites2/fire2.png');
 	this.registerVoxelSprite('gel1', 'img/sprites2/gel1.png');
 	this.registerVoxelSprite('gel2', 'img/sprites2/gel2.png');
-	
+
 	this.registerVoxelSprite('keese1', 'img/sprites2/keese1.png');
 	this.registerVoxelSprite('keese2', 'img/sprites2/keese2.png');
 	this.registerVoxelSprite('medicinewoman', 'img/sprites2/medicinewoman.png');
@@ -586,7 +587,7 @@ ace.EngineVoxel.prototype.setupWebGL_ = function() {
 	this.registerVoxelSprite('block_tan', 'img/sprites2/block_tan.png');
 	this.registerVoxelSprite('block_lime', 'img/sprites2/block_lime.png');
 	this.registerVoxelSprite('block_gray', 'img/sprites2/block_gray.png');
-	
+
 	this.registerVoxelSprite('key', 'img/sprites2/key.png');
 	this.registerVoxelSprite('bomb', 'img/sprites2/bomb.png');
 	this.registerVoxelSprite('bombhole', 'img/sprites2/bombhole.png');
@@ -608,8 +609,8 @@ ace.EngineVoxel.prototype.setupWebGL_ = function() {
   this.registerVoxelSprite('goriya2', 'img/sprites2/goriya2.png');
   this.registerVoxelSprite('goriya_blue', 'img/sprites2/goriya_blue.png');
   this.registerVoxelSprite('goriya2_blue', 'img/sprites2/goriya2_blue.png');
-  
-  this.registerVoxelSprite('blank', 'img/sprites2/blank.png');	
+
+  this.registerVoxelSprite('blank', 'img/sprites2/blank.png');
   this.registerVoxelSprite('trap', 'img/sprites2/trap.png');
 	this.registerVoxelSprite('whitebrick', 'img/sprites2/whitebrick.png');
   this.registerVoxelSprite('bow', 'img/sprites2/bow.png');
@@ -643,8 +644,8 @@ ace.EngineVoxel.prototype.setupWebGL_ = function() {
 	this.registerVoxelSprite('swordshard-br', 'img/sprites2/swordshard-br.png');
 	this.registerVoxelSprite('heartblue', 'img/sprites2/heartblue.png');
 	this.registerVoxelSprite('coinblue', 'img/sprites2/coinblue.png');
-	
-	
+
+
 	this.registerVoxelSprite('forest_pillar_tl', 'img/sprites3/forest_pillar_tl.png');
 	this.registerVoxelSprite('forest_pillar_bl', 'img/sprites3/forest_pillar_bl.png');
 	this.registerVoxelSprite('forest_pillar_tr', 'img/sprites3/forest_pillar_tr.png');
@@ -665,7 +666,7 @@ ace.EngineVoxel.prototype.setupWebGL_ = function() {
 	this.registerVoxelSprite('grave_pillar_br', 'img/sprites3/grave_pillar_br.png');
 	this.registerVoxelSprite('grave_totem_t', 'img/sprites3/grave_totem_t.png');
 	this.registerVoxelSprite('grave_totem_b', 'img/sprites3/grave_totem_b.png');
-	
+
 	this.registerVoxelSprite('rope1', 'img/sprites3/rope1.png');
 	this.registerVoxelSprite('rope2', 'img/sprites3/rope2.png');
 
@@ -679,7 +680,7 @@ ace.EngineVoxel.prototype.setupWebGL_ = function() {
 	this.registerVoxelSprite('statue_rightgray', 'img/sprites2/statue_rightgray.png');
 	this.registerVoxelSprite('statue_leftcyan', 'img/sprites2/statue_leftcyan.png');
 	this.registerVoxelSprite('statue_rightcyan', 'img/sprites2/statue_rightcyan.png');
-	
+
   this.registerVoxelSprite('zora', 'img/sprites3/zora.png');
   this.registerVoxelSprite('bubbles', 'img/sprites3/bubbles.png');
 
@@ -687,10 +688,10 @@ ace.EngineVoxel.prototype.setupWebGL_ = function() {
   this.registerVoxelSprite('dodongofront2', 'img/sprites3/dodongofront2.png');
   this.registerVoxelSprite('dodongorear', 'img/sprites3/dodongorear.png');
   this.registerVoxelSprite('dodongorear2', 'img/sprites3/dodongorear2.png');
-  
+
   this.registerVoxelSprite('zol1', 'img/sprites3/zol1.png');
   this.registerVoxelSprite('zol2', 'img/sprites3/zol2.png');
-  
+
 
   this.registerVoxelSprite('dodongo_closed_head', 'img/sprites4/dodongo_closed_head.png');
   this.registerVoxelSprite('dodongo_closed_tail', 'img/sprites4/dodongo_closed_tail.png');
@@ -705,7 +706,7 @@ ace.EngineVoxel.prototype.setupWebGL_ = function() {
   this.registerVoxelSprite('raft', 'img/sprites3/raft.png');
   this.registerVoxelSprite('bubble-red', 'img/sprites4/bubble-red.png');
   this.registerVoxelSprite('bubble-blue', 'img/sprites4/bubble-blue.png');
-	
+
   this.registerVoxelSprite('ghost', 'img/sprites4/ghini.png');
   this.registerVoxelSprite('manhandla_center', 'img/sprites4/manhandla_center.png');
   this.registerVoxelSprite('manhandla_open', 'img/sprites4/manhandla_open.png');
@@ -753,16 +754,16 @@ ace.EngineVoxel.prototype.onResize = function(viewport, wScale, hScale, topPaddi
 
   var yFromStart = 3820 + game.cameraEye_[1];
   var letterBoxAmount = 1 - Math.min(1, (yFromStart / (topPadding * 2)));
-  
+
   this.canvas.style.top = topPadding - ((topPadding/2) * letterBoxAmount) + 'px';
   $('hud-panel').style.top = this.canvas.style.top;
-	
+
 	this.canvas.width = w;
 	this.canvas.height = h;
 	this.canvas.style.width = Math.floor(w / wScale) + 'px';
 	this.canvas.style.height = Math.floor(h / hScale) + 'px';
-	
-  
+
+
   if (this.gl) {
   	this.gl.viewport(0, 0, this.width, this.height);
   }
@@ -774,7 +775,7 @@ ace.EngineVoxel.prototype.onResize = function(viewport, wScale, hScale, topPaddi
  * @param {string} name The name of the variable in the shader.
  * @param {number} size The size of the attribute. For example, a vec3 would be
  *     3, a mat4 would be 16.
- * @param {number} type Like gl.FLOAT or gl.UNSIGNED_SHORT 
+ * @param {number} type Like gl.FLOAT or gl.UNSIGNED_SHORT
  * @private
  */
 ace.EngineVoxel.prototype.setUpAttribute_ = function(gl, program, name, size, type) {
@@ -811,8 +812,8 @@ ace.EngineVoxel.prototype.goFullScreen = function(opt_div) {
  */
 ace.EngineVoxel.prototype.onFullScreenChanged = function(e) {
 
-  var scale = 1; 
-  
+  var scale = 1;
+
   // TODO(scott): This line make the scale to full the screen. Might want it.
   // var scale = screen.height / (this.height * this.scale);
   if (document.webkitIsFullScreen || document.fullScreen ||
@@ -865,7 +866,7 @@ ace.EngineVoxel.prototype.registerVoxelSprite = function(name, path) {
   img.spriteId = id;
   this.voxelSpriteIdsByName_[name] = id;
   this.voxelSpriteCount_++;
-  
+
   img.onload = ace.bind(function() {
     var id = img.spriteId;
 
@@ -1003,7 +1004,7 @@ ace.EngineVoxel.prototype.drawSingleSprite = function(name, offset, rotZ,
   var numberOfDimensions = 3;
   var baseIndex = ace.overWorldBufferData_.length / this.vertexStride_;
   gl.drawArrays(gl.TRIANGLES, baseIndex, shells * verticesPerShell * numberOfDimensions);
-  
+
   if (opt_renderNegativeColor) {
     gl.uniform1f(this.uRenderNegativeColorLoc, 0);
   }
@@ -1024,7 +1025,7 @@ ace.EngineVoxel.prototype.setCamera = function(eye, target, fovDegrees) {
 
   var up = [0, 0, 1];
   var eye = [0, 0, 0];
-  
+
   eye[0] = this.cameraTarget_[0] + Math.sin(this.cameraRotZ_) *
       this.cameraDistance_ * Math.sin(this.cameraRotX_);
   eye[1] = this.cameraTarget_[1] + Math.cos(this.cameraRotZ_) *
@@ -1057,7 +1058,7 @@ ace.EngineVoxel.prototype.drawRoom = function(name, offset) {
  * @return {number} How many vertices were built.
  */
 ace.EngineVoxel.prototype.populateOnionSkin_ = function(sx, sy, sz) {
-  
+
   var verticesBuilt = 0;
   /**
    * A list of positions going from out to in.
@@ -1072,7 +1073,7 @@ ace.EngineVoxel.prototype.populateOnionSkin_ = function(sx, sy, sz) {
 
 
   for (var a = 0; a < layerCount * 3; a++) {
-    
+
     /* TODO(scott): wow, turning on fewer layers of voxelness really speeds
        things up. Consider this for terrain and rooms.
     var innerA = a % layerCount;
@@ -1082,7 +1083,7 @@ ace.EngineVoxel.prototype.populateOnionSkin_ = function(sx, sy, sz) {
     */
     var direction = a % 3;
     var innerPositionIndex = Math.floor(a / 3);
-    
+
     // TODO(scott): Put this back in.
     var innerPosition = positionList[innerPositionIndex];
 
@@ -1210,8 +1211,8 @@ ace.EngineVoxel.prototype.showPickCanvas = function() {
   this.pickDebugCanvas_.style.left = '10px';
   this.pickDebugCanvas_.style.width = '20px';
   this.pickDebugCanvas_.style.left = '20px';
-  this.pickDebugCanvas_.style.zIndex = 9000; 
-  this.pickDebugCanvas_.style.border = '1px solid red'; 
+  this.pickDebugCanvas_.style.zIndex = 9000;
+  this.pickDebugCanvas_.style.border = '1px solid red';
 };
 
 
@@ -1221,7 +1222,7 @@ ace.EngineVoxel.prototype.showPickCanvas = function() {
  * @param {string} fs The fragment shader source.
  */
 ace.EngineVoxel.prototype.makeProgram = function(gl, vs, fs) {
-  
+
   var program = gl.createProgram();
 
   var shader = gl.createShader(gl.VERTEX_SHADER);
@@ -1302,8 +1303,8 @@ ace.EngineVoxel.prototype.makeProgram = function(gl, vs, fs) {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
 
   gl.uniform1i(this.uDungeonSamplerLoc, 2);
-  
-  
+
+
   this.setUpAttribute_(gl, program, 'aPosition', 3, gl.FLOAT);
   this.setUpAttribute_(gl, program, 'aNormal', 3, gl.FLOAT);
   this.maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
@@ -1322,8 +1323,8 @@ ace.EngineVoxel.prototype.makeProgram = function(gl, vs, fs) {
   this.uLightDirectionLoc = gl.getUniformLocation(program, 'uLightDirection');
 
   gl.uniform3fv(this.uLightDirectionLoc, ace.OVERWORLD_LIGHT_DIRECTION);
-  
-  return program; 
+
+  return program;
 };
 
 
