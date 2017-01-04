@@ -269,15 +269,15 @@ ace.EngineVoxel.prototype.onTick = function(refreshPick) {
   gl.uniformMatrix4fv(this.uOffsetLoc, false, this.uOffsetTransform_);
 
   // The door triangles are stuck on the back end of the world buffer.
-  var worldBufferLength = ace.overWorldBufferData_.length - 32;
-  gl.drawArrays(gl.TRIANGLES, 0, worldBufferLength / this.vertexStride_);
+  //var worldBufferLength = ace.overWorldBufferData_.length - 32;
+  //gl.drawArrays(gl.TRIANGLES, 0, worldBufferLength / this.vertexStride_);
 
-	if (game.currentRoom_.exitByFacing) {
+	/*if (game.currentRoom_.exitByFacing) {
 		if (game.currentRoom_.exitByFacing['left']) { this.drawWall('left'); }
 		if (game.currentRoom_.exitByFacing['right']) { this.drawWall('right'); }
 		if (game.currentRoom_.exitByFacing['up']) { this.drawWall('up'); }
 		if (game.currentRoom_.exitByFacing['down']) { this.drawWall('down'); }
-	}
+	}*/
 };
 
 
@@ -285,7 +285,7 @@ ace.EngineVoxel.prototype.setLightDirection = function(vector) {
   gl.uniform3fv(this.uLightDirectionLoc, vector);
 };
 
-ace.EngineVoxel.prototype.drawWall = function(facing) {
+/*ace.EngineVoxel.prototype.drawWall = function(facing) {
   var centerX = Math.floor(game.avatar.x / 256) * 256 + 256 / 2;
   var centerY = Math.floor(game.avatar.y / 176) * 176 + 176 / 2;
   centerX += 112 * ace.xMultByFacing[facing];
@@ -305,7 +305,7 @@ ace.EngineVoxel.prototype.drawRelativeDoor_ = function(offset, rotZ) {
   gl.uniformMatrix4fv(this.uOffsetLoc, false, this.uOffsetTransform_);
   gl.drawArrays(gl.TRIANGLES, worldBufferLength / this.vertexStride_, 48 / this.vertexStride_);
 
-}
+}*/
 
 
 /**
@@ -393,9 +393,9 @@ ace.EngineVoxel.prototype.onMouseMove = function(e) {
 ace.EngineVoxel.prototype.setupWebGL_ = function() {
 
   this.vertexPosBuffer_ = gl.createBuffer();
-  this.vertices_ = new Float32Array(183600 + ace.overWorldBufferData_.length);
+  this.vertices_ = new Float32Array(183600);
 
-  this.vertices_.set(ace.overWorldBufferData_, 0);
+  //this.vertices_.set(ace.overWorldBufferData_, 0);
   this.vertexStride_ = 6;
   this.numVertices_ = 0;
 
@@ -426,7 +426,14 @@ ace.EngineVoxel.prototype.setupWebGL_ = function() {
   this.registerVoxelSprite('barreddoortop', 'img/sprites2/barreddoortop.png');
 
   this.registerVoxelSprite('linkstand', 'img/sprite_linkstand.png');
-  this.registerVoxelSprite('linkwalk', 'img/sprite_linkwalk.png');
+  this.registerVoxelSprite('linkwalk1', 'img/sprite_linkwalk1.png');
+  this.registerVoxelSprite('linkwalk2', 'img/sprite_linkwalk2.png');
+  this.registerVoxelSprite('linkwalk3', 'img/sprite_linkwalk3.png');
+  this.registerVoxelSprite('linkwalk4', 'img/sprite_linkwalk4.png');
+  this.registerVoxelSprite('linkwalk5', 'img/sprite_linkwalk5.png');
+  this.registerVoxelSprite('linkwalk6', 'img/sprite_linkwalk6.png');
+  this.registerVoxelSprite('linkwalk7', 'img/sprite_linkwalk7.png');
+  this.registerVoxelSprite('linkwalk8', 'img/sprite_linkwalk8.png');
   this.registerVoxelSprite('linkstab', 'img/sprite_linkstab.png');
   this.registerVoxelSprite('linknose', 'img/sprite_linknose.png');
   this.registerVoxelSprite('linkyay', 'img/sprites2/sprite_linkyay.png');
@@ -459,10 +466,14 @@ ace.EngineVoxel.prototype.setupWebGL_ = function() {
   this.registerVoxelSprite('forest_rock_tl', 'img/forest_rock_tl.png');
   this.registerVoxelSprite('forest_rock_tr', 'img/forest_rock_tr.png');
 
+  this.registerVoxelSprite('ow_sand', 'img/ow_sand.png');
+  this.registerVoxelSprite('ow_ground', 'img/ow_sand.png');
+
   this.registerVoxelSprite('ow_rock_bl', 'img/ow_rock_bl.png');
   this.registerVoxelSprite('ow_rock_br', 'img/ow_rock_br.png');
   this.registerVoxelSprite('forest_knight', 'img/forest_knight.png');
 
+  this.registerVoxelSprite('ow_rock', 'img/ow_rock.png');
   this.registerVoxelSprite('ow_rock_t', 'img/ow_rock_t.png');
   this.registerVoxelSprite('ow_rock_tl', 'img/ow_rock_tl.png');
   this.registerVoxelSprite('ow_rock_tr', 'img/ow_rock_tr.png');
@@ -1002,7 +1013,8 @@ ace.EngineVoxel.prototype.drawSingleSprite = function(name, offset, rotZ,
   var shells = opt_shells || (this.voxelSpriteSize_ + 1);
   var verticesPerShell = 6;
   var numberOfDimensions = 3;
-  var baseIndex = ace.overWorldBufferData_.length / this.vertexStride_;
+  //var baseIndex = ace.overWorldBufferData_.length / this.vertexStride_;
+  var baseIndex = 0;
   gl.drawArrays(gl.TRIANGLES, baseIndex, shells * verticesPerShell * numberOfDimensions);
 
   if (opt_renderNegativeColor) {
@@ -1143,7 +1155,8 @@ ace.EngineVoxel.prototype.populateOnionSkin_ = function(sx, sy, sz) {
       var ny = -1;
       var nz = 0;
     }
-    var i = ace.overWorldBufferData_.length + this.numVertices_ * this.vertexStride_;
+    //var i = ace.overWorldBufferData_.length + this.numVertices_ * this.vertexStride_;
+    var i = this.numVertices_ * this.vertexStride_;
 
     this.vertices_[i++] = x1;
     this.vertices_[i++] = y1;

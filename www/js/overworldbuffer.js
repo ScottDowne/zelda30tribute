@@ -1,2 +1,1 @@
-ace.overWorldBufferData_ = new Float32Array([0,-8,-1408,-3.26442e-19,-1,-3.08455e-19,4096,-8,-1439.37,-3.26442e-19,-1,-3.08455e-19,4096,-8,-0,-3.26442e-19,-1,-3.08455e-19,
-]);
+//ace.overWorldBufferData_ = new Float32Array([]);

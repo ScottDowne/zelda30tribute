@@ -11,8 +11,11 @@ ace.overworldActorInfo = {};
 
 // Starting space.
 ace.overworldActorInfo['7,0'] = {};
-ace.overworldActorInfo['7,0']['Cave'] = { teleportTo: [1920,52-8,-1008] }; 
-ace.overworldActorInfo['7,0']['StartScreen'] = {};
+ace.overworldActorInfo['7,0']['Cave'] = { teleportTo: [1920,52-8,-1008] };
+
+// StartScreen was 7,0
+ace.overworldActorInfo['0,0'] = {};
+ace.overworldActorInfo['0,0']['StartScreen'] = {};
 
 ace.overworldActorInfo['6,0'] = {};
 ace.overworldActorInfo['6,0']['Cave'] = { capTile: 'forest_rock_tr', state: 'WAITING_FOR_BOMB'};
@@ -63,7 +66,7 @@ ace.overworldActorInfo['14,6']['Cave'] = { capTile: 'ow_rock_tr', state: 'WAITIN
 
 // Merchant just northwest of start room.
 ace.overworldActorInfo['6,1'] = {};
-ace.overworldActorInfo['6,1']['Cave'] = { teleportTo: [1920,52-8+176,-1008] }; 
+ace.overworldActorInfo['6,1']['Cave'] = { teleportTo: [1920,52-8+176,-1008] };
 
 
 // Entry to dungeon 1.
@@ -109,9 +112,13 @@ for (var x = 0; x <= 15; x++) {
   for (var y = 0; y <= 7; y++) {
     var actorInfo = ace.overworldActorInfo[x + ',' + y] || {};
     ace.overworldActorInfo[x + ',' + y] = actorInfo;
-    actorInfo['Cave'] = actorInfo['Cave'] || {};
+    /*actorInfo['Cave'] = actorInfo['Cave'] || {};
     actorInfo['Cave']['teleportTo'] = actorInfo['Cave']['teleportTo'] ||
-        [1920,52-8+176+176,-1008];
+        [1920,52-8+176+176,-1008];*/
+        if (actorInfo['Cave']) {
+          actorInfo['Cave']['teleportTo'] = actorInfo['Cave']['teleportTo'] ||
+              [1920,52-8+176+176,-1008];
+        }
   }
 }
 

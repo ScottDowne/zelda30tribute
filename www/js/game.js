@@ -25,7 +25,7 @@ ace.Game = function(divId, opt_settings) {
    * The window.
    */
   this.window = settings['window'] || window;
-  
+
   /**
    * Pointer to the Engine class.
    * @type {ace.EngineVoxel}
@@ -37,19 +37,19 @@ ace.Game = function(divId, opt_settings) {
    * @type {HTMLElement}
    */
   this.div = this.document.getElementById(divId);
-  
+
   /**
    * How many frames per second.
    * @type {number}
    */
   this.frameRate = settings.frameRate || 20;
-  
+
   /**
    * Length of each frame in milliseconds.
    * @type {number}
    */
   this.frameLength = 1000 / this.frameRate;
-  
+
   /**
    * A hash of booleans by keyCode
    * @type {Object}
@@ -84,7 +84,7 @@ ace.Game = function(divId, opt_settings) {
    */
   this.hudCanvas_ = $('hud-canvas');
   this.hudCtx_ = this.hudCanvas_.getContext('2d');
-  
+
 
   /**
    * A hash of sounds by sound name.
@@ -117,7 +117,7 @@ ace.Game = function(divId, opt_settings) {
   this.loadSound('gameover', 'sounds/gameover.mp3');
   this.loadSound('health', 'sounds/health-loop.mp3');
   this.loadSound('flute', 'sounds/flute.mp3');
-  
+
   this.playSound('overworld', {'loops': 9999999, volume:50});
 
   /**
@@ -146,7 +146,7 @@ ace.Game = function(divId, opt_settings) {
 
   /**
    * Eye and target arrays for the camera.
-   */  
+   */
   this.cameraEye_ = vec3.fromValues(this.avatar.x - 2500, this.avatar.y - 1000, this.avatar.z + 19100);
   this.cameraTarget_ = vec3.fromValues(this.avatar.x, this.avatar.y + 2000, this.avatar.z);
   this.targetEye_ = vec3.fromValues(100, 0, 0);
@@ -172,7 +172,7 @@ ace.Game = function(divId, opt_settings) {
                 hasVisitedRoomByDungeon: {},
                 maxHitPoints: 3
                 };
-  
+
   // Attempt to load saved game from localStorage.
   if (window.localStorage && window.localStorage['zelda30tribute']) {
     var doLoad = confirm('I\'m going to load your saved game, okay?\n(cancel to start over)');
@@ -180,14 +180,14 @@ ace.Game = function(divId, opt_settings) {
       this.state = JSON.parse(window.localStorage['zelda30tribute']);
     }
   }
-  
-  
+
+
   // How quickly the camera's eye and target positions track toward
   // their targets;
   this.cameraEyeSpeed = .2;
   this.cameraTargetSpeed = .4;
-  this.showStartScreen();
-  
+  //this.showStartScreen();
+
   /**
    * Event handlers.
    */
@@ -197,7 +197,7 @@ ace.Game = function(divId, opt_settings) {
   this.document.addEventListener('keydown', boundOnKeyDown);
   this.document.addEventListener('keyup', boundOnKeyUp);
   this.window.addEventListener('resize', boundOnResize);
-  
+
 
   var boundOnTouchStart = ace.bind(this.onTouchStart_, this);
   var boundOnTouchMove = ace.bind(this.onTouchMove_, this);
@@ -205,7 +205,7 @@ ace.Game = function(divId, opt_settings) {
   var boundOnMouseDown = ace.bind(this.onMouseDown_, this);
   var boundOnMouseMove = ace.bind(this.onMouseMove_, this);
   var boundOnMouseUp = ace.bind(this.onMouseUp_, this);
-  
+
   this.document.addEventListener('touchstart', boundOnTouchStart);
   this.document.addEventListener('touchmove', boundOnTouchMove);
   this.document.addEventListener('touchend', boundOnTouchEnd);
@@ -243,7 +243,7 @@ ace.Game.prototype.typeName = 'Game';
  */
 ace.Game.prototype.onTouchStart_ = function(e) {
   e.preventDefault();
-  this.simulateKeyboardFromTouches_(e.targetTouches, true);  
+  this.simulateKeyboardFromTouches_(e.targetTouches, true);
 };
 
 
@@ -254,7 +254,7 @@ ace.Game.prototype.onTouchStart_ = function(e) {
  */
 ace.Game.prototype.onTouchEnd_ = function(e) {
   e.preventDefault();
-  this.simulateKeyboardFromTouches_(e.targetTouches);  
+  this.simulateKeyboardFromTouches_(e.targetTouches);
 };
 
 
@@ -287,7 +287,7 @@ ace.Game.prototype.simulateKeyboardFromTouches_ = function(targetTouches, isTouc
   this.keyIsDown_['x'] = false; // B button
   this.keyIsDown_['z'] = false; // A button
   this.keyIsDown_[ace.KEY_ENTER] = false; // start button
-  
+
   for (var i =0; i < targetTouches.length; i++) {
     var x = targetTouches[i].clientX;
     var y = targetTouches[i].clientY;
@@ -297,18 +297,18 @@ ace.Game.prototype.simulateKeyboardFromTouches_ = function(targetTouches, isTouc
         this.keyIsDown_[ace.KEY_SPACE] = true;
         if (isTouchStart) {
           this.keyWasPressed_['x'] = true;
-          this.keyWasPressed_[ace.KEY_SPACE] = true; 
+          this.keyWasPressed_[ace.KEY_SPACE] = true;
         }
-        
+
       } else if (this.pointIsOverElement(x, y, $('button-b'))) {
-        
+
         this.keyIsDown_['z'] = true;
         if (isTouchStart) {
-          this.keyWasPressed_['z'] = true; 
+          this.keyWasPressed_['z'] = true;
         }
       } else if (this.pointIsOverElement(x, y, $('button-start'))) {
         this.keyIsDown_[ace.KEY_ENTER] = true;
-        
+
         if (isTouchStart) {
           this.keyWasPressed_['button-start'] = true;
           this.pressStart();
@@ -318,7 +318,7 @@ ace.Game.prototype.simulateKeyboardFromTouches_ = function(targetTouches, isTouc
 
     if (x < 250) {
       if (this.pointIsOverElement(x, y, $('dpad-u'))) {
-        this.keyIsDown_[ace.KEY_UP] = true;        
+        this.keyIsDown_[ace.KEY_UP] = true;
       } else if (this.pointIsOverElement(x, y, $('dpad-d'))) {
         this.keyIsDown_[ace.KEY_DOWN] = true;
       } else if (this.pointIsOverElement(x, y, $('dpad-l'))) {
@@ -337,20 +337,20 @@ ace.Game.prototype.simulateKeyboardFromTouches_ = function(targetTouches, isTouc
       } else if (this.pointIsOverElement(x, y, $('dpad-ul'))) {
         this.keyIsDown_[ace.KEY_LEFT] = true;
         this.keyIsDown_[ace.KEY_UP] = true;
-      } 
+      }
     }
-    
+
     if (isTouchStart) {
-      this.keyWasPressed_[ace.KEY_LEFT] = this.keyIsDown_[ace.KEY_LEFT]; 
-      this.keyWasPressed_[ace.KEY_RIGHT] = this.keyIsDown_[ace.KEY_RIGHT]; 
-      this.keyWasPressed_[ace.KEY_UP] = this.keyIsDown_[ace.KEY_UP]; 
-      this.keyWasPressed_[ace.KEY_DOWN] = this.keyIsDown_[ace.KEY_DOWN]; 
+      this.keyWasPressed_[ace.KEY_LEFT] = this.keyIsDown_[ace.KEY_LEFT];
+      this.keyWasPressed_[ace.KEY_RIGHT] = this.keyIsDown_[ace.KEY_RIGHT];
+      this.keyWasPressed_[ace.KEY_UP] = this.keyIsDown_[ace.KEY_UP];
+      this.keyWasPressed_[ace.KEY_DOWN] = this.keyIsDown_[ace.KEY_DOWN];
     }
   }
 
   this.updateButtons_();
 }
-  
+
 /**
  * Updates the dPad and A/B buttons based on keyboard state.
  * @private
@@ -362,13 +362,13 @@ ace.Game.prototype.updateButtons_ = function() {
   } else {
     $('button-b').className = '';
   }
-  
+
   if (this.keyIsDown_[ace.KEY_SPACE] || this.keyIsDown_['x'] || this.keyIsDown_['l']) {
     $('button-a').className = 'pressed';
   } else {
     $('button-a').className = '';
   }
-  
+
   if (this.keyIsDown_[ace.KEY_ENTER]) {
     $('button-start').className = 'pressed';
   } else {
@@ -376,10 +376,10 @@ ace.Game.prototype.updateButtons_ = function() {
   }
 
   var dPadTransform = '';
-  dPadTransform += (this.keyIsDown_[ace.KEY_DOWN] || this.keyIsDown_['s']) ? ' rotateX( -12deg ) ' : ''; 
-  dPadTransform += (this.keyIsDown_[ace.KEY_UP] || this.keyIsDown_['w']) ? ' rotateX( 12deg ) ' : ''; 
-  dPadTransform += (this.keyIsDown_[ace.KEY_LEFT] || this.keyIsDown_['a']) ? ' rotateY( -12deg ) ' : ''; 
-  dPadTransform += (this.keyIsDown_[ace.KEY_RIGHT] || this.keyIsDown_['d']) ? ' rotateY( 12deg ) ' : ''; 
+  dPadTransform += (this.keyIsDown_[ace.KEY_DOWN] || this.keyIsDown_['s']) ? ' rotateX( -12deg ) ' : '';
+  dPadTransform += (this.keyIsDown_[ace.KEY_UP] || this.keyIsDown_['w']) ? ' rotateX( 12deg ) ' : '';
+  dPadTransform += (this.keyIsDown_[ace.KEY_LEFT] || this.keyIsDown_['a']) ? ' rotateY( -12deg ) ' : '';
+  dPadTransform += (this.keyIsDown_[ace.KEY_RIGHT] || this.keyIsDown_['d']) ? ' rotateY( 12deg ) ' : '';
 
   this.dPad.style.transform = dPadTransform;
   this.dPad.style.webkitTransform = dPadTransform;
@@ -397,7 +397,7 @@ ace.Game.prototype.onMouseDown_ = function(e) {
   // Simulate a single touch.
   this.mouseIsDown = true;
   var touchEvent = {preventDefault: function() {},
-                    targetTouches: [{clientX: e.clientX, 
+                    targetTouches: [{clientX: e.clientX,
                                      clientY: e.clientY}]};
   this.onTouchStart_(touchEvent);
 };
@@ -425,7 +425,7 @@ ace.Game.prototype.onMouseMove_ = function(e) {
   // Simulate a single touch.
   if (this.mouseIsDown) {
     var touchEvent = {preventDefault: function() {},
-                      targetTouches: [{clientX: e.clientX, 
+                      targetTouches: [{clientX: e.clientX,
                                        clientY: e.clientY}]};
     this.onTouchMove_(touchEvent);
   }
@@ -454,13 +454,13 @@ ace.Game.prototype.pointIsOverElement = function(x, y, el) {
  */
 ace.Game.prototype.spawnRoomActors = function(room) {
   for (var i = 0; i < room.actors.length; i++) {
-    var actor = room.actors[i];    
-    
+    var actor = room.actors[i];
+
     if (actor.settings.hideIfInventory &&
         game.avatar.hasInventory(actor.settings.hideIfInventory)) {
       continue;
     }
-    
+
     var z = this.getWorldZ(actor.x, actor.y);
     if (room.isInUnderworld) {
       z = -1008;
@@ -471,16 +471,16 @@ ace.Game.prototype.spawnRoomActors = function(room) {
       spawnSettings[key] = actorSettings[key];
     }
     var newActor = this.spawn(actor.type, spawnSettings);
-    
+
     var roomName = this.getRoomUniqueName(room);
     this.state.isHiddenByActorCountNumber = this.state.isHiddenByActorCountNumber || {};
-    
+
     if (newActor && this.state.isHiddenByActorCountNumber[roomName] &&
         this.state.isHiddenByActorCountNumber[roomName][newActor.actorCountNumber]) {
       newActor.hide();
       newActor.hitPoints = 0;
     }
-    
+
   }
 };
 
@@ -535,7 +535,7 @@ ace.Game.prototype.stop = function() {
  * @param {ace.Room} room The room to draw.
  */
 ace.Game.prototype.onTick = function(timeStamp) {
-  
+
   if (this.isPaused) {
     var currentItemId = 0;
     for (var i = 0; i < ace.selectableItemList.length; i++) {
@@ -544,7 +544,7 @@ ace.Game.prototype.onTick = function(timeStamp) {
 	      currentItemId = i;
 	    }
 	  }
-	  
+
 	  var row = Math.floor(currentItemId / 4);
 	  var col = currentItemId % 4;
     if (game.keyWasPressed(ace.KEY_LEFT) || game.keyWasPressed('a')) {
@@ -563,18 +563,18 @@ ace.Game.prototype.onTick = function(timeStamp) {
 		col = (col + 4) % 4;
 		currentItemId = row * 4 + col;
 		game.avatar.currentItem = ace.selectableItemList[currentItemId];
-		
+
     this.refreshInfoPanel();
     this.keyWasPressed_ = {};
     requestAnimationFrame(this.boundOnTick);
-    
+
     return;
   }
-  
+
 
   var isLogicFrame = false;
   var elapsed = timeStamp - this.lastTimeStamp;
-  
+
   if (elapsed >= this.idealFrameLength) {
     isLogicFrame = true;
   }
@@ -615,7 +615,7 @@ ace.Game.prototype.onTick = function(timeStamp) {
       // Remove all of the actors for now.
       // And store a list of hidden actors, so things don't respawn.
       this.currentRoom_.isHiddenByActorCountNumber = {};
-      
+
       var roomName = this.getRoomUniqueName(this.currentRoom_);
       this.state.isHiddenByActorCountNumber =
           this.state.isHiddenByActorCountNumber || {};
@@ -632,12 +632,12 @@ ace.Game.prototype.onTick = function(timeStamp) {
           actorsToDisappear.push({x: actor.x, y: actor.y, z: actor.z});
         }
       }
-      
-					
+
+
       this.actors = [this.actors.shift()];
       this.avatar.flyingSword = null;
-      
-      
+
+
       if (newRoom.song !== this.currentRoom_.song) {
         game.stopSound('underworld');
         game.stopSound('overworld');
@@ -647,7 +647,7 @@ ace.Game.prototype.onTick = function(timeStamp) {
           }, 1500);
         }
       }
-      
+
       if (newRoom.isInUnderworld != this.currentRoom_.isInUnderworld) {
         this.refreshInfoPanel();
         if (newRoom.isInUnderworld) {
@@ -668,7 +668,7 @@ ace.Game.prototype.onTick = function(timeStamp) {
           }
         }
       }
-      
+
       if (newRoom.isInUnderworld) {
         var dungeonName = game.currentDungeon_.name;
         game.state.hasVisitedRoomByDungeon[dungeonName] =
@@ -676,27 +676,27 @@ ace.Game.prototype.onTick = function(timeStamp) {
         game.state.hasVisitedRoomByDungeon[dungeonName][newRoom.name] = true;
         this.refreshInfoPanel();
       }
-      
+
       console.log('ENTERING ROOM:' + newRoom.x + ',' + newRoom.y);
       //console.log(newRoom);
       this.currentRoom_ = newRoom;
       this.spawnRoomActors(this.currentRoom_);
-      
+
       // Show a cloud for any old overworld enemies hanging around.
       for (var i = 0; i < actorsToDisappear.length; i++) {
         this.spawn('Cloud', actorsToDisappear[i]);
       }
-      
+
       this.refreshInfoPanel();
     }
 
     var avatarGridX = Math.floor(this.avatar.x / 16);
     var avatarGridY = Math.floor(this.avatar.y / 16);
-    
+
     // If the screen is wider, we need to render more sprites.
     var screenRatio = this.engine.canvas.width / this.engine.canvas.height;
     var scale = screenRatio / 1.5;
-    
+
     // Also, if we're at high altitudes, render more.
     var altitudeCorrection = Math.ceil(this.avatar.z / 15);
 
@@ -707,7 +707,7 @@ ace.Game.prototype.onTick = function(timeStamp) {
         var worldX = gridX * 16 + 8;
         var worldY = gridY * 16 + 8;
         var tile = this.getTileAt(worldX, worldY);
-        
+
         // We have some extra work to do with caves.
         if (tile.name == 'Cave') {
           var z = game.getWorldZ(worldX, worldY);
@@ -722,11 +722,12 @@ ace.Game.prototype.onTick = function(timeStamp) {
           }
           this.engine.drawSingleSprite('ow_cave',
 						[worldX, worldY + capTileFix, z], 0);
-              
+
         }
-        
+
         if (this.engine.spriteHasBeenRegistered(tile.name) && !ace[tile.name]) {
           var shells = ace.shellsByTileName[tile.name];
+          // Using heightmap for the z position of sprites isn't great, once I add multiple layers of sprites.
           var z = game.getWorldZ(worldX, worldY);
           if (tile.name == 'ow_path' || tile.name.indexOf('rock') > -1) {
             z -= 16;
@@ -735,7 +736,7 @@ ace.Game.prototype.onTick = function(timeStamp) {
           }
           worldY += (ace.yOffsetsByName[tile.name] || 0);
           z += (ace.zOffsetsByName[tile.name] || 0);
-          
+
           // Fix for SketchUp model.
           var room = this.getRoom(worldX, worldY);
           if (ace.overworldTileXOffset[room.x + ',' + room.y]) {
@@ -750,7 +751,7 @@ ace.Game.prototype.onTick = function(timeStamp) {
 
     this.updateCamera();
   }
-  
+
   // Reset key press hash.
   this.keyWasPressed_ = {};
   this.onResize();
@@ -767,7 +768,7 @@ ace.Game.prototype.updateCamera = function() {
   var eyeFixY = 0;
   var eyeFixZ = 0;
   var fovDegrees = 45;
-  
+
 
 
   // If we're blocked by the big green mountain, move eye up.
@@ -780,13 +781,13 @@ ace.Game.prototype.updateCamera = function() {
   var eyeX = this.avatar.x;
   var eyeY = this.avatar.y - 200 + eyeFixY;
   var eyeZ = quantizedZ + 220 + eyeFixZ;
-  
-  
-  
+
+
+
   var cameraMinSensitivity = .3;
   var targetX = this.avatar.x;
   var targetY = this.avatar.y;
-  
+
   // If we're in the underworld, everything is different.
   if (this.avatar.isInUnderworld()) {
 
@@ -798,7 +799,7 @@ ace.Game.prototype.updateCamera = function() {
     cameraMinSensitivity = 0
     this.cameraEyeSpeed = .4;
   }
-  
+
   var targetOffset = this.currentRoom_.cameraTargetOffset;
   var eyeOffset = this.currentRoom_.cameraEyeOffset;
   if (targetOffset) {
@@ -809,7 +810,7 @@ ace.Game.prototype.updateCamera = function() {
     eyeY += eyeOffset[1];
     eyeZ += eyeOffset[2];
   }
-  
+
   vec3.set(this.targetEye_, eyeX, eyeY, eyeZ);
   vec3.set(this.targetTarget_, targetX, targetY, quantizedZ);
 
@@ -817,8 +818,8 @@ ace.Game.prototype.updateCamera = function() {
   vec3.subtract(this.cameraTargetDelta_, this.targetTarget_, this.cameraTarget_);
   vec3.scale(this.cameraEyeDelta_, this.cameraEyeDelta_, this.cameraEyeSpeed);
   vec3.scale(this.cameraTargetDelta_, this.cameraTargetDelta_, this.cameraTargetSpeed);
-  
-  
+
+
   if (vec3.length(this.cameraEyeDelta_) > cameraMinSensitivity ||
       this.needsCameraRefresh_) {
     vec3.add(this.cameraEye_, this.cameraEye_, this.cameraEyeDelta_);
@@ -827,7 +828,7 @@ ace.Game.prototype.updateCamera = function() {
     this.needsCameraRefresh_ = false;
   }
 
-  // If we're "zoomAnimating" the camera, everything is different. 
+  // If we're "zoomAnimating" the camera, everything is different.
   if (this.isZoomAnimating) {
     this.zoomAnimatingFrames = this.zoomAnimatingFrames || 1;
     this.zoomAnimatingFrames++;
@@ -892,16 +893,16 @@ ace.Game.prototype.keyWasPressed = function(keyCode) {
  * Refreshes the info bar that shows coins, hearts, etc.
  */
 ace.Game.prototype.refreshInfoPanel = function() {
-  
+
   if (!game.avatar.isInUnderworld() ||
       this.currentDungeon_.name == 'Dungeon1' && this.currentRoom_.x > 5) {
-   
+
     this.hudCtx_.drawImage($('hud-image'), 0, 0);
     $('hud-room').style.left = (16 + this.currentRoom_.x * 8) + 'px';
     $('hud-room').style.top = (72 + 360 - this.currentRoom_.y * 8) + 'px';
-    
+
   } else {
-  
+
     this.hudCtx_.drawImage($('hud-image-underworld'), 0, 0);
 
     for (var x = 0; x <= 10; x++) {
@@ -910,7 +911,7 @@ ace.Game.prototype.refreshInfoPanel = function() {
         var dungeonName = game.currentDungeon_.name;
         game.state.hasVisitedRoomByDungeon[dungeonName] =
             game.state.hasVisitedRoomByDungeon[dungeonName] || {};
-        var hasVisitedThisRoom =  game.state.hasVisitedRoomByDungeon[dungeonName][room.name];               
+        var hasVisitedThisRoom =  game.state.hasVisitedRoomByDungeon[dungeonName][room.name];
         if (!room.hideOnMap) {
           var mx = 14 + 16 * x;
           var my = 440 - 8 * y;
@@ -922,12 +923,12 @@ ace.Game.prototype.refreshInfoPanel = function() {
             }
             this.hudCtx_.fillRect(mx, my - 6, 14, 6);
           } else {
-            
+
             if (hasVisitedThisRoom) {
               this.hudCtx_.fillStyle = '#454545';
               this.hudCtx_.fillRect(mx, my - 6, 14, 6);
             }
-            
+
           }
           if (room.isCompassPoint == true &&
               game.state.hasCompassByDungeon[game.currentDungeon_.name] == true) {
@@ -944,12 +945,12 @@ ace.Game.prototype.refreshInfoPanel = function() {
     if (!game.state.hasCompassByDungeon[game.currentDungeon_.name]) {
       this.hudCtx_.clearRect(84, 302, 48, 48);
     }
-          
+
 
     $('hud-room').style.left = (19 + this.currentRoom_.x * 16) + 'px';
     $('hud-room').style.top = (74 + 360 - this.currentRoom_.y * 8) + 'px';
   }
-  
+
   // We placed the various "caves" inside the first dungeon, off to the
   // right of the map. So if we're in a cave, don't show the link
   // pixel on the map.
@@ -957,7 +958,7 @@ ace.Game.prototype.refreshInfoPanel = function() {
       this.currentDungeon_.name == 'Dungeon1' && this.currentRoom_.x > 5) {
     $('hud-room').style.top = '-5000px';
   }
-  
+
 	for (var i = 0; i < ace.selectableItemList.length; i++) {
 	  var itemName = ace.selectableItemList[i];
 	  var col = i % 4;
@@ -973,13 +974,13 @@ ace.Game.prototype.refreshInfoPanel = function() {
                                232, 390, 28, 32);
         this.hudCtx_.drawImage(this.hudCanvas_, x, y, 32, 32,
                                100, 94, 32, 32);
-      } 
+      }
       this.hudCtx_.drawImage($('hud-panel-selector'),
 	                           0, 0, 32, 32,
-	                           x, y, 32, 32);              
+	                           x, y, 32, 32);
 	  }
 	}
-	var itemList = ['raft', 'book', 'ring', 'ladder', 'magickey', 'bracelet'];  
+	var itemList = ['raft', 'book', 'ring', 'ladder', 'magickey', 'bracelet'];
 	for (var i = 0; i < itemList.length; i++) {
 	  var x = 228 + 32 * i;
 	  var y = 46;
@@ -990,13 +991,13 @@ ace.Game.prototype.refreshInfoPanel = function() {
 	if (!this.avatar.hasInventory('itemwoodensword')) {
     this.hudCtx_.clearRect(280, 388, 28, 34);
   }
-  
-  
-  
+
+
+
   $('runner-info-panel').innerHTML = this.state.coins + '<br/><br/>' +
       this.state.keys + '<br/>' + this.state.bombs;
   $('hud-hearts').style.width = (this.avatar.hitPoints * 16) + 'px';
-  $('hud-max-hit-points').style.width = (this.avatar.maxHitPoints * 16) + 'px';  
+  $('hud-max-hit-points').style.width = (this.avatar.maxHitPoints * 16) + 'px';
 };
 
 
@@ -1062,17 +1063,17 @@ ace.Game.prototype.fadeSound = function(soundName, duration, targetVolume) {
       callback = typeof callback == 'function' ? callback : function(){};
       var s    = soundManager.getSoundById(id);
       var k    = 50; // TODO(scott): This is hardcoded right now for songs.
-      
+
       var t    = dur/Math.abs(k - toVol),
           i    = setInterval(function(){
                 k = k > toVol ? k - 1 : k + 1;
                 s.setVolume(k);
-                if(k == toVol){ 
+                if(k == toVol){
                         callback.call(this);
                   clearInterval(i);
                   i = null;
                 }
-        }, t);	
+        }, t);
     }
   soundManager.fadeTo(soundName, duration, targetVolume);
 };
@@ -1111,7 +1112,7 @@ ace.Game.prototype.onResize = function() {
   var topPadding = 100;
   document.getElementById('button-panel').style.opacity = 1;
   document.getElementById('dpad-panel').style.opacity = 1;
-  
+
   if (w < 460 || h < 500) {
     document.getElementById('hud-panel').style.transform = 'scale(0.5) translateY(230px)';
     topPadding = 50;
@@ -1123,9 +1124,9 @@ ace.Game.prototype.onResize = function() {
     document.getElementById('hud-panel').style.transform = '';
     document.getElementById('hud-panel').style.top = '50px';
   }
-  
+
   h = this.window.innerHeight - topPadding;
-  
+
   var ratio = w / h;
   var viewport = {w: w,
                   h: h};
@@ -1134,8 +1135,8 @@ ace.Game.prototype.onResize = function() {
   if (minHeight < h) {
     viewport.top = Math.floor((h - minHeight) / 2);
     viewport.h = minHeight;
-  }  
-  
+  }
+
   // TODO(scott): Auto size based on performance.
   this.engine.onResize(viewport, 1, 1, topPadding); //this.state.canvasScale);
   this.needsCameraRefresh_ = true;
@@ -1185,6 +1186,7 @@ ace.Game.prototype.onKeyUp = function(e) {
  * @return {number} The z-altitude at the spot.
  */
 ace.Game.prototype.getWorldZ = function(x, y) {
+  // This being static is not great, but works for now.
   var worldWidth = 4096;
   var worldHeight = 1408;
 
@@ -1208,11 +1210,11 @@ ace.Game.prototype.randomSpotInRoom = function(worldX, worldY) {
       ace.OVERWORLD_ROOM_PIXEL_WIDTH;
   var baseY = Math.floor(worldY / ace.OVERWORLD_ROOM_PIXEL_HEIGHT) *
       ace.OVERWORLD_ROOM_PIXEL_HEIGHT;
-  
+
   // Inset for the walls of the underworld.
   baseX += 32;
   baseY += 32;
-  
+
   // Now add randomness.
   baseX += ace.randomInt(ace.OVERWORLD_ROOM_PIXEL_WIDTH - 64);
   baseY += ace.randomInt(ace.OVERWORLD_ROOM_PIXEL_HEIGHT - 64);
@@ -1236,7 +1238,7 @@ ace.Game.prototype.getTileAt = function(worldX, worldY, opt_z) {
   } else {
     tileId = ace.tileMap[tileY][tileX];
   }
-  
+
   // If we're in the underworld, everything is ground.
   if (opt_z && opt_z < -100) {
     var room = this.getRoom(worldX, worldY, opt_z);
@@ -1248,19 +1250,19 @@ ace.Game.prototype.getTileAt = function(worldX, worldY, opt_z) {
   if (tileId == null) {
     tileId = ace.tileIdsByName['ow_ground'];
   }
- 
+
   var tileName = ace.tileNamesById[tileId];
   var isWalkable = ace.isWalkableByName[tileName];
   var isWalkableByEnemies = ace.isWalkableByEnemiesByName[tileName];
   if (isWalkable === undefined) {
     isWalkable = this.isActor_(tileName);
   }
-  
+
   // Hardcoded weirdness around the "lake sand" above
   // the entrance to dungeon 7.
-  if (worldX > 580 && worldX < 690 && 
+  if (worldX > 580 && worldX < 690 &&
       worldY > 580 && worldY < 660) {
-    isWalkable = true; 
+    isWalkable = true;
   }
 
   var walkSpeedFactor = ace.walkSpeedFactorByTileName[tileName] || 1;
@@ -1331,14 +1333,14 @@ ace.Game.prototype.canExit = function(room, facing) {
  */
 ace.Game.prototype.getRoom = function(x, y, z) {
   this.cachedOverworldRooms_ = this.cachedOverworldRooms_ || {};
-  
+
   // If we're underground, look for a dungeon room.
   if (z < -100) {
     var rx = Math.floor(x / ace.UNDERWORLD_ROOM_PIXEL_WIDTH);
     var ry = Math.floor(y / ace.UNDERWORLD_ROOM_PIXEL_HEIGHT);
     return this.currentDungeon_.getRoom(rx, ry);
   }
-  
+
   // Otherwise, construct a room record on the fly from our tile map.
   var rx = Math.floor(x / ace.OVERWORLD_ROOM_PIXEL_WIDTH);
   var ry = Math.floor(y / ace.OVERWORLD_ROOM_PIXEL_HEIGHT);
@@ -1358,21 +1360,21 @@ ace.Game.prototype.getRoom = function(x, y, z) {
         var worldX = baseX + gridX * ace.TILE_SIZE + 8;
         var worldY = baseY + gridY * ace.TILE_SIZE + 8;
         var actorTile = this.getTileAt(worldX, worldY);
-				
+
         if (ace[actorTile.name]) {
           var actor = {};
           actor['type'] = actorTile.name;
           actor['x'] = worldX;
           actor['y'] = worldY;
           actor['settings'] = {};
-          
+
           if (roomActorInfo[actorTile.name]) {
             hasSpawnedByActorName[actorTile.name] = true;
             for (var key in roomActorInfo[actorTile.name]) {
               actor['settings'][key] = roomActorInfo[actorTile.name][key];
             }
           }
-          
+
           room.actors.push(actor);
         } else if (actorTile.name.indexOf('_') == -1) {
 				  console.log('COULD NOT FIND actor:' + actorTile.name);
@@ -1387,15 +1389,15 @@ ace.Game.prototype.getRoom = function(x, y, z) {
         actor['x'] = 0;
         actor['y'] = 0;
         actor['settings'] = {};
-      
+
         for (var key in roomActorInfo[actorName]) {
           actor['settings'][key] = roomActorInfo[actorName][key];
         }
-        room.actors.push(actor);   
+        room.actors.push(actor);
       }
-      
-    } 
-    
+
+    }
+
 
     this.cachedOverworldRooms_[name] = room;
   }
@@ -1439,14 +1441,14 @@ ace.Game.prototype.zoomToStart = function() {
   this.cameraTargetSpeed = 0.02;
   //this.cameraEyeSpeed = 0.2;
   //this.cameraTargetSpeed = 0.2;
-  
-  
-  
+
+
+
   this.zoomToStartTimer = setInterval(function() {
     game.cameraEyeSpeed = (game.cameraEyeSpeed * 40 + game.idealCameraEyeSpeed) / 41;
     game.cameraTargetSpeed = (game.cameraTargetSpeed * 40 + game.idealCameraTargetSpeed) / 41;
     var hasSavedGame = game.state.lastOverworldLocation;
-    
+
     if (Math.abs(game.cameraEyeSpeed - game.idealCameraEyeSpeed) < .35 || hasSavedGame) {
       if (hasSavedGame) {
         game.continue(true);
@@ -1479,7 +1481,7 @@ ace.Game.prototype.zoomThroughLogo = function() {
   dX = dX / zoomFraction;
   dY = dY / zoomFraction;
   dZ = dZ / zoomFraction;
-  
+
   var frames = 0;
   clearInterval(game.zoomThroughLogoTimer);
   game.zoomThroughLogoTimer = setInterval(function() {
@@ -1509,13 +1511,13 @@ ace.Game.prototype.zoomThroughLogo = function() {
 ace.Game.prototype.showStartScreen = function() {
   this.pauseSound('overworld');
   this.playSound('intro', {'loops': 99999, volume:50});
-  
+
   this.cameraTarget_ = [1891, -2200, 2230]
   this.cameraEye_ = [1891,-3820,1880];
   this.cameraEyeSpeed = 0;
   this.cameraTargetSpeed = 0;
   $('intro-panel').scrollTop = 0;
-  
+
   this.showCreditsTimer = this.window.setTimeout(function() {
     game.showCredits();
   }, 12000);
@@ -1531,7 +1533,7 @@ ace.Game.prototype.pressStart = function() {
       game.resumeSound('overworld');//, {'loops': 99999, volume:50});
     }, 3500);
     game.fadeSound('intro', 4500, 0);
-        
+
     clearInterval(game.zoomThroughLogoTimer);
     clearInterval(game.showCreditsTimer);
     clearInterval(game.scrollTimer);
@@ -1592,14 +1594,14 @@ ace.Game.prototype.showCredits = function() {
   $('vines-hline-id').style.marginTop = (window.innerHeight / 2 - 180) + 'px'
   var isIPad = navigator.userAgent.match(/iPad/i) != null;
   var scrollAmount = isIPad ? 4 : 2;
-  
+
   game.scrollTimer = this.window.setInterval(function() {
-    
-    
+
+
     var startY = 700;
     var bestY = window.innerHeight / 2 - 200;
     var startPauseAt = startY - bestY;
-    
+
     var pause = 100;
     if (scroll < startPauseAt) {
       $('intro-panel').scrollTop = scroll;
@@ -1611,7 +1613,7 @@ ace.Game.prototype.showCredits = function() {
     if (scroll > startPauseAt + pause) {
       $('intro-panel').scrollTop = scroll - pause;
     }
-    
+
     var elapsed = new Date() - startTime;
 
     if (elapsed/1000 > 1400 / 20 && $('intro-panel').className != 'hidden') {
@@ -1659,25 +1661,25 @@ ace.Game.prototype.continue = function(isRestoringFromSavedGame) {
   this.avatar.invincibleCounter = 0;
   this.avatar.maxHitPoints = game.state.maxHitPoints || 3;
   this.refreshInfoPanel();
-  
+
   this.stopSound('gameover');
   this.resetOverworld();
   game.setCameraEye(game.avatar.x, game.avatar.y, game.avatar.z);
   game.setCameraTarget(game.avatar.x, game.avatar.y, game.avatar.z);
 
-  
+
   if (!isRestoringFromSavedGame) {
     game.playSound('text');
     game.playSound('overworld');
     window.setTimeout(function () {
-      document.getElementById('game-over-wrapper').className = 'hidden';    
+      document.getElementById('game-over-wrapper').className = 'hidden';
       // TODO(scott): For some reason, I have to set the z again
       // when I'm in a side-scrolling room. Hmm.
       game.avatar.z = 0;
       game.setCameraEye(game.avatar.x, game.avatar.y, game.avatar.z);
       game.setCameraTarget(game.avatar.x, game.avatar.y, game.avatar.z);
     }, 500);
-    
+
     window.setTimeout(function () {
       document.getElementById('game-over-wrapper').style.zIndex = 9;
     }, 1500);
@@ -1701,10 +1703,10 @@ ace.Game.prototype.save = function() {
     alert('Sorry, your browser does not support localStorage, which is needed to save your game.');
     return;
   }
-  
+
   var stateString = JSON.stringify(this.state);
   window.localStorage['zelda30tribute'] = stateString;
-  alert('Your game is saved! When you return to this page, you\'ll be in business.');   
+  alert('Your game is saved! When you return to this page, you\'ll be in business.');
 };
 
 

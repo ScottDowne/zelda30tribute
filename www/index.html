@@ -117,13 +117,13 @@ void main() {
   }
 
   if (uSpriteId == -1.0) {
-    
-    
-    
+
+
+
     if (vWorldPosition.z > -100.0) {
       float mapX = pos.x;
       float mapY = pos.y;
-      
+
       // Use water if we're off the map.
       if (vWorldPosition.y < 0.0 || vWorldPosition.x < 0.0 ||
           vWorldPosition.x > 4096.0 || vWorldPosition.y > 1408.0) {
@@ -137,7 +137,7 @@ void main() {
       float dz = (pos.z - floor(pos.z / 16.0) * 16.0);
       u = u + (vNormal.x * dz) * xPixelSize;
       v = v + (vNormal.y * dz) * yPixelSize;
-      
+
       gl_FragColor = vec4(texture2D(uSpriteSampler, vec2(u, v)).rgb, 1.0);
     } else {
       float mapX = vWorldPosition.x;
@@ -159,14 +159,14 @@ void main() {
     uv[0] += fx * xPixelSize + xHalfPixelSize;
     uv[0] += fz * xSpritePixelSize;
     uv[1] += fy * yPixelSize + yHalfPixelSize;
-  
-    gl_FragColor = texture2D(uSpriteSampler, uv);  
+
+    gl_FragColor = texture2D(uSpriteSampler, uv);
   }
-  
+
   if (uRenderNegativeColor > 0.5) {
     gl_FragColor.rgb = vec3(1.8) - gl_FragColor.bgr;
   }
-  
+
   gl_FragColor.rgb -= vec3(lightingFactor);
 
 
@@ -345,7 +345,7 @@ MIKE MAGEE
 
 <h2>GAME+SOUND+ART+MUSIC+
 <br>MEMORIES+MAGIC</h2>
-NINTENDO 
+NINTENDO
 
 <p><h2>CONTACT US</h2>
 <a href="https://twitter.com/zelda30tribute" target="_blank"><em>twitter.com/zelda30tribute</em></a>
@@ -360,7 +360,7 @@ NINTENDO
 
 <img src="img/link-with-sign.png" alt="Legend of Zelda with Voxels"
      ontouchstart="game.showOptions()" onclick="game.showOptions()">
-</center>    
+</center>
 </div>
 </div>
 
@@ -369,7 +369,7 @@ NINTENDO
     <div class="menu-link" onclick="game.continue()" ontouchstart="game.continue()">CONTINUE</div>
     <div class="menu-link" onclick="game.save()" ontouchstart="game.save()">SAVE</div>
     <div class="menu-link" onclick="game.reset()" ontouchstart="game.reset()">RESET</div>
-    
+
     <div class="vines-hline">
     <h3>About</h3>
     </div>
@@ -380,12 +380,12 @@ NINTENDO
     kids to code</a>, and <a href="https://www.facebook.com/profile.php?id=100007287228430" target="_blank">Mike</a>, an independent mobile game developer and retro game enthusiast.
 
     <!-- Begin MailChimp Signup Form -->
-   
+
       <div class="vines-hline">
       <h3>Stay in the Loop!</h3>
       </div>
       <P>Join our mail list or follow us on <a href="https://twitter.com/zelda30tribute" target="_blank">twitter</a> or <a href="https://facebook.com/zelda30tribute" target="_blank">facebook</a>.
-    
+
     <p><iframe src="about.html" width="400" height="100" frameborder="0"
       scrolling="no"
       marginheight="0"
@@ -411,7 +411,7 @@ a {
   overflow: hidden;
   transition: opacity 4s;
   background: black;
-  z-index: 950;			
+  z-index: 950;
 }
 #intro-text {
   font-family: 'Press Start 2P', monospace;
@@ -581,6 +581,7 @@ canvas {
   line-height: 20px;
 }
 #hud-panel {
+  display: none;
   width: 456px;
   height: 456px;
   position: fixed;
@@ -663,6 +664,7 @@ canvas {
   height: 256px;
 }
 #dpad-panel {
+  display: none;
   position: fixed;
   z-index: 1000;
   width: 250px;
@@ -672,16 +674,16 @@ canvas {
   margin-left: -50px;
   background-image: url(img/controller2.png);
   background-size: 860px 250px;
-  
+
   -webkit-perspective: 150px;
 		 -moz-perspective: 150px;
 			 -o-perspective: 150px;
 					perspective: 150px;
   perspective-origin: 50% 40%;
-              
+
   padding-top: 25px;
 	padding-left: 50px;
-	
+
 	  user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -710,6 +712,7 @@ canvas {
 					transform-style: preserve-3d;
 }
 #button-panel {
+  display: none;
   position: fixed;
   z-index: 1000;
   width: 250px;
@@ -840,7 +843,7 @@ canvas {
   opacity: 1;
 }
 
-.menu-link { 
+.menu-link {
   background-image: none;
   background-size: 16px 16px;
   background-position: center left;
@@ -853,7 +856,7 @@ canvas {
   letter-spacing: 1px;
   cursor: pointer;
 }
-.menu-link:hover { 
+.menu-link:hover {
   background-image: url(img/hud-heart.png);
 }
 </style>

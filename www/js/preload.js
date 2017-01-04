@@ -8,7 +8,7 @@ var images = [
   'dungeons/dungeon8.png',
   'dungeons/dungeon9.png',
   'dungeons/dungeon1.png',
-    
+
   'img/title/title-mist.png',
   'img/title/title-rock-solid.png',
   'img/title/title-rock.png',
@@ -86,7 +86,7 @@ var images = [
   'img/title/title11-3.png',
   'img/title/title11-4.png',
   'img/title/title11-5.png',
-  
+
   'img/ArcherArrow.png',
   'img/coin.png',
   'img/controller2.png',
@@ -161,9 +161,16 @@ var images = [
   'img/sprite_linknose.png',
   'img/sprite_linkstab.png',
   'img/sprite_linkstand.png',
-  'img/sprite_linkwalk.png',
+  'img/sprite_linkwalk1.png',
+  'img/sprite_linkwalk2.png',
+  'img/sprite_linkwalk3.png',
+  'img/sprite_linkwalk4.png',
+  'img/sprite_linkwalk5.png',
+  'img/sprite_linkwalk6.png',
+  'img/sprite_linkwalk7.png',
+  'img/sprite_linkwalk8.png',
   'img/sprite_woodensword.png',
-  
+
   'img/chars/char-.png',
   'img/chars/char,.png',
   'img/chars/char!.png',

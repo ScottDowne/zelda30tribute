@@ -21,23 +21,29 @@ ace.Avatar = function(game, room) {
 
   this.hitPoints = 3;
   this.maxHitPoints = 3;
-    
+
   this.invincibleCounter = 0;
   this.invincibleCounterOnHurt = 40;
-  
+
   // Which item we think we have equipped.
   this.currentItem = 'boomerang';
 
-  this.x = 1892;
-  this.y = 84;
+/*
+// Original starting location. StartScreen in overworld.js needs to match.
+    this.x = 32;
+    this.y = 32;
+    */
+
+  this.x = 16 * 4;
+  this.y = 16 * 4;
   this.z = 0;
-  
+
   // If larger than 0, we're "sword cursed" from a bubble.
   this.swordCurseCounter = 0;
-  
+
   this.facing = 'down';
   this.isLeavingCave = false;
-  
+
 /*
   // puts you up near the top of the overworld.
    this.x = 2590;
@@ -46,21 +52,21 @@ ace.Avatar = function(game, room) {
   // This puts you in the lower-left
 
   this.x = 16 * 4;
-  this.y = 16 * 4;  
+  this.y = 16 * 4;
   this.x =  -1000 + 120
   this.y =  -1000 + 72
 */
 	//this.x = 2720;
   //this.y = 1120;
-  
-  // That weird spot where you have to walk up many times 
+
+  // That weird spot where you have to walk up many times
   //this.x = 2936;
   //this.y = 1187;
-  
+
   // Cave way up in the corner.
   //this.x = 3674;
 	//this.y = 1313;
-  
+
   // Entry to dungeon 1:
 	//this.x = 1924;
 	//this.y = 765;
@@ -72,7 +78,7 @@ ace.Avatar = function(game, room) {
 	// Top left of world
 	//this.x = 1094;
 	//this.y = 1301;
-	
+
 	// Lake above waterfall
 	//this.x = 2618;
 	//this.y = 1289;
@@ -84,7 +90,7 @@ ace.Avatar = function(game, room) {
 	// Jumbly rock pile.
 	//this.x = 1586;
 	//this.y = 870;
-	
+
 	// By the Zora
 	//this.x = 2116;
   //this.y = 588;
@@ -106,7 +112,7 @@ ace.Avatar = function(game, room) {
   this.showSwordCount = 0;
   this.shieldDownCount = 0;
   this.swordLength = 33;
-  
+
   this.frames = {
     'Walkdown0': { backgroundPosition: '0 0' },
     'Walkdown1': { backgroundPosition: '0 -84px' },
@@ -125,7 +131,7 @@ ace.Avatar = function(game, room) {
 
   this.facing = 'down';
   this.action = 'Walk';
-  this.walkFrame = 0;  
+  this.walkFrame = 0;
 };
 ace.inherits(ace.Avatar, ace.Actor);
 
@@ -135,12 +141,12 @@ ace.inherits(ace.Avatar, ace.Actor);
  * @param {ace.Game} The game.
  */
 ace.Avatar.prototype.onTick = function(game) {
-  
+
   if (game.isStartScreen()) {
     // Don't do anything during the start screen.
     return;
   }
-  
+
   if (this.hitPoints <= 0) {
     // Death animation.
     if (this.hitPoints > -999) {
@@ -153,19 +159,19 @@ ace.Avatar.prototype.onTick = function(game) {
     this.deathCount += 1;
     this.rotZ = this.deathCount / 2;
     this.draw('linkstand');
-    
+
     var redLength = 75;
     game.engine.drawLight($('light-red'), this.x, this.y,512,
                           Math.min(.8, this.deathCount / redLength));
-    
+
     if (this.deathCount == redLength) {
       document.getElementById('game-over-wrapper').className = 'visible';
       document.getElementById('game-over-wrapper').style.zIndex = 5000;
     }
 
-    return;  
+    return;
   }
-  
+
   if (this.pickingUp) {
     var dz = 16;
     if (game.currentRoom_.isSideScroll) {
@@ -181,7 +187,7 @@ ace.Avatar.prototype.onTick = function(game) {
       this.draw('linkyay2');
       this.draw(this.pickingUp, [this.x, this.y, this.z + dz + this.zOffset]);
     }
-    
+
     // If we're picking up a triforce piece, this counter
     // will have a number in it. We'll use that to animate
     // the appropriate light flashes.
@@ -200,17 +206,17 @@ ace.Avatar.prototype.onTick = function(game) {
         this.zOffset = 0;
       }
     }
-    
+
     game.engine.drawLight($('light-lantern'), this.x, this.y,100);
     return;
   }
-  
+
   if (this.raftDirection) {
     this.rotZ = ace.getRotZByFacing(this.raftDirection);
     this.z = -6;
     this.invincibleCounter = 1;
     this.renderNegativeColor = false;
-    
+
     this.draw('linkstand');
     this.draw('raft', [this.x, this.y+8, -6], this.rotZ, Math.PI/2);
     var raftSpeed = 2;
@@ -223,7 +229,7 @@ ace.Avatar.prototype.onTick = function(game) {
     }
     return;
   }
-  
+
   if (game.currentRoom_ && game.currentRoom_.isSideScroll) {
     this.rotX = -1.6;
     this.zOffset = 0;
@@ -259,7 +265,7 @@ ace.Avatar.prototype.onTick = function(game) {
   swordZ = this.z - 2;
 
   if (this.showSwordCount > 0) {
-		
+
     this.draw('woodensword', [swordX, swordY, swordZ], this.rotZ, 0.001, 0.001);
     this.showSwordCount--;
     if (this.showSwordCount == 0) {
@@ -267,7 +273,7 @@ ace.Avatar.prototype.onTick = function(game) {
     }
   }
   if (this.shieldDownCount > 0) this.shieldDownCount--;
-  
+
   function correctHeight(x, y, change) {
     var grid = game.getGridXY(x, y);
     var currentHeight = ace.heightMap[grid.y][grid.x];
@@ -321,23 +327,23 @@ ace.Avatar.prototype.onTick = function(game) {
       correctHeight(this.x + 16 * ace.xMultByFacing[this.facing],
                     this.y + 16 * ace.yMultByFacing[this.facing],
                     -16);
-    }  
+    }
     if (game.keyWasPressed('h')) {
       this.changeHitPoints(20);
     }
     if (game.keyWasPressed('b')) {
       this.changeBombs(10);
-    } 
-   
+    }
+
     if (game.keyWasPressed('e')) {
       correctTileMap(this.x + 16 * ace.xMultByFacing[this.facing],
                      this.y + 16 * ace.yMultByFacing[this.facing]);
     }
-    
-  
-  
+
+
+
     if (game.keyWasPressed('1')) {
-    
+
       this.x = 1924;
       this.y = 765;
       this.z = 0;
@@ -428,10 +434,10 @@ ace.Avatar.prototype.onTick = function(game) {
       if (game.keyWasPressed(ace.KEY_RIGHT)) { this.x += 128 };
       if (game.keyWasPressed(ace.KEY_LEFT)) { this.x -= 128 };
       if (game.keyWasPressed(ace.KEY_DOWN)) { this.y -= 176/2 };
-      if (game.keyWasPressed(ace.KEY_UP)) { this.y += 176/2 };		
+      if (game.keyWasPressed(ace.KEY_UP)) { this.y += 176/2 };
     }
 	}
-	
+
   if (!this.isFrozen) {
 
 		if (game.keyIsDown(ace.KEY_LEFT) || game.keyIsDown('a')) {
@@ -454,13 +460,13 @@ ace.Avatar.prototype.onTick = function(game) {
 			this.facing = 'down';
 			isWalking = true;
 		}
-	
+
 		// If your sword is out, you can't walk.
 		// Also, of we have a zOffset, it means we're on some cave stairs.
 		// In such a case, don't allow walking.
 		if (isWalking && this.showSwordCount == 0 && this.zOffset >= 0) {
 			var tile = this.getTileAt(this.x, this.y, this.z);
-			
+
 			// It's possible to ask for the tile off screen, so assume a normal
 			// walkspeed.
 			var walkSpeedFactor = 1;
@@ -469,7 +475,7 @@ ace.Avatar.prototype.onTick = function(game) {
 			}
 			var dx = Math.round(dx * walkSpeedFactor);
 			var dy = Math.round(dy * walkSpeedFactor);
-	
+
 			if (dx != 0 && dy != 0) {
 				dx = (dx / this.walkSpeed) * this.diagonalWalkSpeed;
 				dy = (dy / this.walkSpeed) * this.diagonalWalkSpeed;
@@ -480,11 +486,11 @@ ace.Avatar.prototype.onTick = function(game) {
 			if (!this.canWalk(0, dy)) {
 				dy = 0;
 			}
-			
+
 			this.x += dx;
 			this.y += dy;
 		}
-		
+
 		if (game.keyWasPressed('z') || game.keyWasPressed('k')) {
 		  // We just spawn whatever is equipped and let the actors handle it.
       if (this.currentItem == 'boomerang') {
@@ -495,7 +501,7 @@ ace.Avatar.prototype.onTick = function(game) {
         }
       }
       if (this.currentItem == 'bomb') {
-      
+
         // TODO(scott): Does LOZ limit the number of bombs you can have on the screen?
         if (this.hasInventory('bomb')) {
           var bombDx = 12 * ace.xMultByFacing[this.facing];
@@ -511,13 +517,13 @@ ace.Avatar.prototype.onTick = function(game) {
         game.currentRoom_.whistleHasBeenBlown = true;
       }
       console.log(this.currentItem);
-      
+
 		}
 
     if (this.swordCurseCounter > 0) {
 		  this.swordCurseCounter--;
 	  }
-	  
+
 		if ((game.keyWasPressed(ace.KEY_SPACE) || game.keyWasPressed('x') || game.keyWasPressed('l'))
 		     && this.swordCurseCounter <= 0 && (this.hasInventory('itemwoodensword'))) {
 			game.playSound('sword');
@@ -525,7 +531,7 @@ ace.Avatar.prototype.onTick = function(game) {
 			this.showSwordCount = this.showSwordCountReset;
 			this.shieldDownCount = this.shieldDownCountReset;
 			var hitSomething = this.hitWithSword(game);
-	
+
 			if (!hitSomething && this.hitPoints == this.maxHitPoints) {
 				game.playSound('swordshoot');
 				if (this.flyingSword) {
@@ -542,13 +548,13 @@ ace.Avatar.prototype.onTick = function(game) {
 				}
 			}
 		}
-	
+
 		// Handle walking on steep things.
 		if (this.isInUnderworld()) {
 			// DO nothing.
 		} else {
 			this.z = game.getWorldZ(this.x, this.y);
-			
+
 			var tile = this.getTileAt(this.x, this.y);
 			//if (upZ > this.z && this.canWalk(0, 16)) {
 			//	var dZ = (this.y % 16);
@@ -564,17 +570,18 @@ ace.Avatar.prototype.onTick = function(game) {
 			  }
 			}
 		}
-	
+
 		if (isWalking) {
-			var framesPerStep = 4;
+			var framesPerStep = 8;
 			this.walkFrame = (this.walkFrame + 1) % framesPerStep;
+      console.log(this.walkFrame);
 			if (this.showSwordCount == 0) {
-				var walkNum = Math.floor(this.walkFrame / (framesPerStep/2));
+				var walkNum = this.walkFrame;
 				var frameName = 'Walk' + this.facing + walkNum;
 				//this.setFrame(frameName);
 			}
 		}
-	
+
 		// Assume the avatar is always the first one.
 		for (var i = 1; i < game.actors.length; i++) {
 			var actor = game.actors[i];
@@ -582,35 +589,31 @@ ace.Avatar.prototype.onTick = function(game) {
 				actor.onTouchAvatar(game);
 			}
 		}
-	
+
 		this.rotZ = ace.getRotZByFacing(this.facing);
   }
 
   if (this.showSwordCount > 0) {
-    this.z -= 1;
+    //this.z -= 1;
     this.draw('linkstab');
     if (game.currentRoom_.isSideScroll) {
       this.yOffset += 1;
     }
-  } else if (isWalking && walkNum == 0) {
-    this.z -= 1;
-    if (game.currentRoom_.isSideScroll) {
-      this.yOffset += 1;
-    }
-    this.draw('linkwalk');
+  } else if (isWalking) {
+      this.draw('linkwalk' + (walkNum + 1));
   } else {
     this.draw('linkstand');
   }
-  
+
   // Just like LOZ, Only draw his nose if he's not facing the camera
   // or in side-scroll mode.
-  if (this.facing != 'down' && this.rotX > -1.5) {
+  /*if (this.facing != 'down' && this.rotX > -1.5) {
      var noseOffsetFacing = ace.getClockwiseFacing(this.facing);
     var noseX = this.x + .5 * ace.xMultByFacing[noseOffsetFacing];
     var noseY = this.y + .5 * ace.yMultByFacing[noseOffsetFacing];
     this.draw('linknose', [noseX, noseY, this.z], this.rotZ, 0.001, 0.001);
-  }
-  
+  }*/
+
   // Now render his shadow into the light map.
   if (this.isInUnderworld()) {
     game.engine.drawLight($('light-lantern'), this.x, this.y,100);
@@ -627,7 +630,7 @@ ace.Avatar.prototype.onTick = function(game) {
 ace.Avatar.prototype.hitWithSword = function(game) {
   var multX = ace.xMultByFacing[this.facing];
   var multY = ace.yMultByFacing[this.facing];
-  
+
   var xAtTip = this.x + this.swordLength * multX;
   var yAtTip = this.y + this.swordLength * multY;
 
@@ -638,9 +641,9 @@ ace.Avatar.prototype.hitWithSword = function(game) {
   var hitSomething = false;
   for (var i = 1; i < game.actors.length; i++) {
     var actor = game.actors[i];
-		
+
 		var itemCanBeStruck = (actor.hitPoints && actor.hitPoints < 0);
-		
+
     if (actor.isHitAt(xAtTip, yAtTip) || actor.isHitAt(xAtHilt, yAtHilt)) {
       if (actor.name == 'coin') {
         if (itemCanBeStruck) {
@@ -652,12 +655,12 @@ ace.Avatar.prototype.hitWithSword = function(game) {
 					this.changeHitPoints(1);
 					actor.hide();
 				}
-      } else if (actor.name == 'key') { 
+      } else if (actor.name == 'key') {
 				if (itemCanBeStruck) {
 					this.changeKeys(1);
 					actor.hide();
 				}
-      } else if (actor.name == 'bomb') { 
+      } else if (actor.name == 'bomb') {
 				if (itemCanBeStruck) {
 					this.changeBombs(1);
 					actor.hide();
@@ -687,16 +690,16 @@ ace.Avatar.prototype.takeDamage = function(damage) {
   game.playSound('hurt');
   this.invincibleCounter = this.invincibleCounterOnHurt;
   this.hitPoints -= damage;
-  
+
   // If there's a ?debug on the query string, don't allow
   // link to die.
   if (('' + window.location).indexOf('debug') > -1 && this.hitPoints < .5) {
     this.hitPoints = .5;
   }
-  
+
   game.refreshInfoPanel();
   if (damage != 0) {
-    this.refreshHealthBeeps();  
+    this.refreshHealthBeeps();
   }
 };
 
@@ -820,7 +823,7 @@ ace.Avatar.prototype.isThrowingBoomerang = function() {
   for (var i = 0; i < game.actors.length; i++) {
     if (game.actors[i].name.indexOf('FlyingBoomerang') > -1 &&
         game.actors[i].isHidden == false) {
-      return true;    
+      return true;
     }
   }
   return false;
@@ -846,8 +849,8 @@ ace.Avatar.prototype.pickUp = function(item, teleportTo) {
 	  game.playSound('item');
 	  game.refreshInfoPanel();
 	  return;
-	}	
-	
+	}
+
 	var pause = 2000;
 	if (item == 'triforcepiece') {
 	  game.stopSound('underworld');
@@ -865,7 +868,7 @@ ace.Avatar.prototype.pickUp = function(item, teleportTo) {
 
   this.pickingUp = item;
   this.facing = 'down';
-  
+
   if (item == 'magicalboomerang') {
     this.pickingUp = 'boomerang_blue';
   }
@@ -881,23 +884,23 @@ ace.Avatar.prototype.pickUp = function(item, teleportTo) {
     game.currentRoom_.cameraEyeOffset = [-50,65,-190];
     game.currentRoom_.cameraTargetOffset = [0, 0, 15];
     this.rotZ = -1;
-  }  
-  
+  }
+
   // To make him float just a hair off the ground.
   this.zOffset = .5;
   this.walkFrame = 1;
 
   setTimeout(function() {
 		game.currentRoom_.cameraEyeOffset = oldEyeOffset;
-		game.currentRoom_.cameraTargetOffset = oldTargetOffset; 
+		game.currentRoom_.cameraTargetOffset = oldTargetOffset;
 		game.avatar.rotZ = 0;
 		game.avatar.zOffset = 0;
   }, pause);
-  
+
   setTimeout(function() {
-  	game.avatar.pickingUp = false;   
+  	game.avatar.pickingUp = false;
   }, pause + 200);
-  
+
   if (teleportTo) {
 		setTimeout(function() {
 			game.avatar.x = teleportTo[0];
