@@ -425,15 +425,16 @@ ace.EngineVoxel.prototype.setupWebGL_ = function() {
   this.registerVoxelSprite('barreddoor', 'img/sprites2/barreddoor.png');
   this.registerVoxelSprite('barreddoortop', 'img/sprites2/barreddoortop.png');
 
-  this.registerVoxelSprite('linkstand', 'img/sprite_linkstand.png');
-  this.registerVoxelSprite('linkwalk1', 'img/sprite_linkwalk1.png');
-  this.registerVoxelSprite('linkwalk2', 'img/sprite_linkwalk2.png');
-  this.registerVoxelSprite('linkwalk3', 'img/sprite_linkwalk3.png');
-  this.registerVoxelSprite('linkwalk4', 'img/sprite_linkwalk4.png');
-  this.registerVoxelSprite('linkwalk5', 'img/sprite_linkwalk5.png');
-  this.registerVoxelSprite('linkwalk6', 'img/sprite_linkwalk6.png');
-  this.registerVoxelSprite('linkwalk7', 'img/sprite_linkwalk7.png');
-  this.registerVoxelSprite('linkwalk8', 'img/sprite_linkwalk8.png');
+  this.registerVoxelSprite('playerstand', 'img/player.png', 0);
+  this.registerVoxelSprite('playerwalk1', 'img/player.png', 1);
+  this.registerVoxelSprite('playerwalk2', 'img/player.png', 2);
+  this.registerVoxelSprite('playerwalk3', 'img/player.png', 3);
+  this.registerVoxelSprite('playerwalk4', 'img/player.png', 4);
+  this.registerVoxelSprite('playerwalk5', 'img/player.png', 5);
+  this.registerVoxelSprite('playerwalk6', 'img/player.png', 6);
+  this.registerVoxelSprite('playerwalk7', 'img/player.png', 7);
+  this.registerVoxelSprite('playerwalk8', 'img/player.png', 8);
+
   this.registerVoxelSprite('linkstab', 'img/sprite_linkstab.png');
   this.registerVoxelSprite('linknose', 'img/sprite_linknose.png');
   this.registerVoxelSprite('linkyay', 'img/sprites2/sprite_linkyay.png');
@@ -870,14 +871,16 @@ ace.EngineVoxel.prototype.buildMVP_ = function(eye, target, up, opt_fovDegrees) 
  * Loads a voxel sprite into our texture canvas and registers it by name.
  * @param {string} name The friendly name of the sprite to register.
  * @param {string} path The load path for the png with the voxel data.
+ * @param {string} startX Useful if the image is in a sprite sheet.
  */
-ace.EngineVoxel.prototype.registerVoxelSprite = function(name, path) {
+ace.EngineVoxel.prototype.registerVoxelSprite = function(name, path, startX) {
   var img = new Image();
   var id = this.voxelSpriteCount_;
   img.spriteId = id;
   this.voxelSpriteIdsByName_[name] = id;
   this.voxelSpriteCount_++;
-
+  startX = startX || 0;
+  startX *= 16;
   img.onload = ace.bind(function() {
     var id = img.spriteId;
 
@@ -890,7 +893,7 @@ ace.EngineVoxel.prototype.registerVoxelSprite = function(name, path) {
       var xWithPad = paddedWidth * i;
       var innerX = i * this.voxelSpriteSize_;
       this.ctx.drawImage(img,
-          innerX, 0,
+          innerX, startX,
           this.voxelSpriteSize_, this.voxelSpriteSize_,
           drawPos.x + xWithPad, drawPos.y,
           this.voxelSpriteSize_, this.voxelSpriteSize_

@@ -698,12 +698,12 @@ ace.Game.prototype.onTick = function(timeStamp) {
     var scale = screenRatio / 1.5;
 
     // Also, if we're at high altitudes, render more.
-    //var altitudeCorrection = Math.ceil(this.avatar.z / 15);
+    var altitudeCorrection = Math.ceil(this.avatar.z / 15);
 
     var xTileSeek = Math.ceil(9 * scale);
     var yTileSeek = 8;
     for (var gridZ = 0; gridZ < 2; gridZ++) {
-      for (var gridY = avatarGridY - (yTileSeek - 1); gridY < avatarGridY + yTileSeek/* + altitudeCorrection*/; gridY++) {
+      for (var gridY = avatarGridY - (yTileSeek - 1); gridY < avatarGridY + yTileSeek + altitudeCorrection; gridY++) {
         for (var gridX = avatarGridX - xTileSeek; gridX < avatarGridX + xTileSeek; gridX++) {
           var tile = this.getTileAt(gridX, gridY, gridZ);
           if (tile && this.engine.spriteHasBeenRegistered(tile.name) && !ace[tile.name]) {
@@ -711,6 +711,7 @@ ace.Game.prototype.onTick = function(timeStamp) {
             var worldZ = (gridZ * 16) - 16;
             var worldX = (gridX * 16) + 8;
             var worldY = (gridY * 16) + 8;
+            //console.log(gridZ, gridX, gridY);
             this.engine.drawSingleSprite(tile.name,
                 [worldX, worldY, worldZ], 0, shells);
           }

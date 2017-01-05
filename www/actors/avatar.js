@@ -158,7 +158,7 @@ ace.Avatar.prototype.onTick = function(game) {
     this.hitPoints = -999;
     this.deathCount += 1;
     this.rotZ = this.deathCount / 2;
-    this.draw('linkstand');
+    this.draw('playerstand');
 
     var redLength = 75;
     game.engine.drawLight($('light-red'), this.x, this.y,512,
@@ -217,7 +217,7 @@ ace.Avatar.prototype.onTick = function(game) {
     this.invincibleCounter = 1;
     this.renderNegativeColor = false;
 
-    this.draw('linkstand');
+    this.draw('playerstand');
     this.draw('raft', [this.x, this.y+8, -6], this.rotZ, Math.PI/2);
     var raftSpeed = 2;
     this.x += raftSpeed * ace.xMultByFacing[this.raftDirection];
@@ -551,21 +551,6 @@ ace.Avatar.prototype.onTick = function(game) {
 			// DO nothing.
 		} else {
 			this.z = game.getWorldZ(this.x, this.y);
-//console.log(this.z);
-	//		var tile = this.getTileAt(this.x, this.y, this.z);
-			//if (upZ > this.z && this.canWalk(0, 16)) {
-			//	var dZ = (this.y % 16);
-			//	this.z += dZ;
-			//}
-		//	if (!tile || tile.name == 'ow_path') {
-			  /*var upZ = game.getWorldZ(this.x, this.y + 0);
-			  var downZ = game.getWorldZ(this.x, this.y - 16);
-			  var factorZ = (this.y % 16) / 16;
-			  var dZ = upZ - downZ;
-			  if (downZ < upZ) {
-			    this.z = downZ + dZ * factorZ;
-			  }*/
-			//}
 		}
 
 		if (isWalking) {
@@ -596,20 +581,11 @@ ace.Avatar.prototype.onTick = function(game) {
       this.yOffset += 1;
     }
   } else if (isWalking) {
-      this.draw('linkwalk' + (walkNum + 1));
+      this.draw('playerwalk' + (walkNum + 1));
   } else {
     this.walkFrame = 0;
-    this.draw('linkstand');
+    this.draw('playerstand');
   }
-
-  // Just like LOZ, Only draw his nose if he's not facing the camera
-  // or in side-scroll mode.
-  /*if (this.facing != 'down' && this.rotX > -1.5) {
-     var noseOffsetFacing = ace.getClockwiseFacing(this.facing);
-    var noseX = this.x + .5 * ace.xMultByFacing[noseOffsetFacing];
-    var noseY = this.y + .5 * ace.yMultByFacing[noseOffsetFacing];
-    this.draw('linknose', [noseX, noseY, this.z], this.rotZ, 0.001, 0.001);
-  }*/
 
   // Now render his shadow into the light map.
   if (this.isInUnderworld()) {
