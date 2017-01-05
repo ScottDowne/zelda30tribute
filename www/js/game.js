@@ -698,53 +698,22 @@ ace.Game.prototype.onTick = function(timeStamp) {
     var scale = screenRatio / 1.5;
 
     // Also, if we're at high altitudes, render more.
-    var altitudeCorrection = Math.ceil(this.avatar.z / 15);
+    //var altitudeCorrection = Math.ceil(this.avatar.z / 15);
 
     var xTileSeek = Math.ceil(9 * scale);
     var yTileSeek = 8;
-    for (var gridX = avatarGridX - xTileSeek; gridX < avatarGridX + xTileSeek; gridX++) {
-      for (var gridY = avatarGridY - (yTileSeek - 1); gridY < avatarGridY + yTileSeek + altitudeCorrection; gridY++) {
-        var worldX = gridX * 16 + 8;
-        var worldY = gridY * 16 + 8;
-        var tile = this.getTileAt(worldX, worldY);
-
-        // We have some extra work to do with caves.
-        if (tile.name == 'Cave') {
-          var z = game.getWorldZ(worldX, worldY);
-          var capTileFix = 0;
-          var rx = Math.floor(worldX / ace.OVERWORLD_ROOM_PIXEL_WIDTH);
-          var ry = Math.floor(worldY / ace.OVERWORLD_ROOM_PIXEL_HEIGHT);
-          var room = ace.overworldActorInfo[rx + ',' + ry];
-          if (room && room['Cave'] && room['Cave'].capTile) {
-						this.engine.drawSingleSprite(room['Cave'].capTile,
-								[worldX, worldY, z+16], 0);
-						capTileFix = 1;
+    for (var gridZ = 0; gridZ < 2; gridZ++) {
+      for (var gridY = avatarGridY - (yTileSeek - 1); gridY < avatarGridY + yTileSeek/* + altitudeCorrection*/; gridY++) {
+        for (var gridX = avatarGridX - xTileSeek; gridX < avatarGridX + xTileSeek; gridX++) {
+          var tile = this.getTileAt(gridX, gridY, gridZ);
+          if (tile && this.engine.spriteHasBeenRegistered(tile.name) && !ace[tile.name]) {
+            var shells = ace.shellsByTileName[tile.name];
+            var worldZ = (gridZ * 16) - 16;
+            var worldX = (gridX * 16) + 8;
+            var worldY = (gridY * 16) + 8;
+            this.engine.drawSingleSprite(tile.name,
+                [worldX, worldY, worldZ], 0, shells);
           }
-          this.engine.drawSingleSprite('ow_cave',
-						[worldX, worldY + capTileFix, z], 0);
-
-        }
-
-        if (this.engine.spriteHasBeenRegistered(tile.name) && !ace[tile.name]) {
-          var shells = ace.shellsByTileName[tile.name];
-          // Using heightmap for the z position of sprites isn't great, once I add multiple layers of sprites.
-          var z = game.getWorldZ(worldX, worldY);
-          if (tile.name == 'ow_path' || tile.name.indexOf('rock') > -1) {
-            z -= 16;
-          } else if (tile.name.indexOf('ow_water') > -1) {
-            z -= 8;
-          }
-          worldY += (ace.yOffsetsByName[tile.name] || 0);
-          z += (ace.zOffsetsByName[tile.name] || 0);
-
-          // Fix for SketchUp model.
-          var room = this.getRoom(worldX, worldY);
-          if (ace.overworldTileXOffset[room.x + ',' + room.y]) {
-            worldX += ace.overworldTileXOffset[room.x + ',' + room.y];
-          }
-
-          this.engine.drawSingleSprite(tile.name,
-              [worldX, worldY, z], 0, shells);
         }
       }
     }
@@ -1224,32 +1193,31 @@ ace.Game.prototype.randomSpotInRoom = function(worldX, worldY) {
 
 
 /**
- * Gets a tile ID at a given x, y coordinate.
- * @param {number} worldX The world x coordinate.
- * @param {number} worldY The world y coordinate.
+ * Gets a tile ID at a given x, y, z coordinate.
+ * @param {number} tileX The tile x coordinate.
+ * @param {number} tileY The tile y coordinate.
+ * @param {number} tileZ The tile y coordinate.
  * @return {object} A simple data structure with ID and name.
  */
-ace.Game.prototype.getTileAt = function(worldX, worldY, opt_z) {
-  var tileX = Math.floor(worldX / 16);
-  var tileY = Math.floor(worldY / 16);
+ace.Game.prototype.getTileAt = function(tileX, tileY, tileZ) {
   var tileId;
-  if (!ace.tileMap[tileY]) {
-    tileId = ace.tileIdsByName['ow_ground'];
+  if (!ace.tileMap[tileZ] || !ace.tileMap[tileZ][tileY] || !ace.tileMap[tileZ][tileY][tileX]) {
+    return;
   } else {
-    tileId = ace.tileMap[tileY][tileX];
+    tileId = ace.tileMap[tileZ][tileY][tileX];
   }
 
   // If we're in the underworld, everything is ground.
-  if (opt_z && opt_z < -100) {
+  /*if (opt_z && opt_z < -100) {
     var room = this.getRoom(worldX, worldY, opt_z);
     return room.getTileAt(worldX, worldY);
-  }
+  }*/
 
   // TODO(scott): Is this correct logic? Need to debug why I have some nulls
   // in the tileMap in the first place.
-  if (tileId == null) {
-    tileId = ace.tileIdsByName['ow_ground'];
-  }
+  //if (tileId == null) {
+  //  tileId = ace.tileIdsByName['ow_ground'];
+  //}
 
   var tileName = ace.tileNamesById[tileId];
   var isWalkable = ace.isWalkableByName[tileName];
@@ -1260,14 +1228,14 @@ ace.Game.prototype.getTileAt = function(worldX, worldY, opt_z) {
 
   // Hardcoded weirdness around the "lake sand" above
   // the entrance to dungeon 7.
-  if (worldX > 580 && worldX < 690 &&
+  /*if (worldX > 580 && worldX < 690 &&
       worldY > 580 && worldY < 660) {
     isWalkable = true;
-  }
+  }*/
 
   var walkSpeedFactor = ace.walkSpeedFactorByTileName[tileName] || 1;
   return {
-    'id': ace.tileId,
+    'id': tileId,
     'name': tileName,
     'isWalkable': isWalkable,
     'isWalkableByEnemies': isWalkableByEnemies,
@@ -1359,26 +1327,28 @@ ace.Game.prototype.getRoom = function(x, y, z) {
       for (var gridY = 0; gridY < ace.OVERWORLD_ROOM_TILE_HEIGHT; gridY++) {
         var worldX = baseX + gridX * ace.TILE_SIZE + 8;
         var worldY = baseY + gridY * ace.TILE_SIZE + 8;
-        var actorTile = this.getTileAt(worldX, worldY);
+        // This is all busted.
+        var actorTile = this.getTileAt(worldX, worldY, 0);
+        if (actorTile) {
+          if (ace[actorTile.name]) {
+            var actor = {};
+            actor['type'] = actorTile.name;
+            actor['x'] = worldX;
+            actor['y'] = worldY;
+            actor['settings'] = {};
 
-        if (ace[actorTile.name]) {
-          var actor = {};
-          actor['type'] = actorTile.name;
-          actor['x'] = worldX;
-          actor['y'] = worldY;
-          actor['settings'] = {};
-
-          if (roomActorInfo[actorTile.name]) {
-            hasSpawnedByActorName[actorTile.name] = true;
-            for (var key in roomActorInfo[actorTile.name]) {
-              actor['settings'][key] = roomActorInfo[actorTile.name][key];
+            if (roomActorInfo[actorTile.name]) {
+              hasSpawnedByActorName[actorTile.name] = true;
+              for (var key in roomActorInfo[actorTile.name]) {
+                actor['settings'][key] = roomActorInfo[actorTile.name][key];
+              }
             }
-          }
 
-          room.actors.push(actor);
-        } else if (actorTile.name.indexOf('_') == -1) {
-				  console.log('COULD NOT FIND actor:' + actorTile.name);
-				}
+            room.actors.push(actor);
+          } else if (actorTile.name.indexOf('_') == -1) {
+  				  console.log('COULD NOT FIND actor:' + actorTile.name);
+  				}
+        }
       }
     }
 

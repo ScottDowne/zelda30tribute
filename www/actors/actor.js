@@ -85,19 +85,19 @@ ace.Actor = function(game, room, settings) {
      */
     this.roomHeight = this.room.map.tileSize * this.room.map.roomHeight;
   }
-  
+
   /**
    * Whether this guy is hidden. Hidden actors don't interact at all.
    * @type {boolean}
    */
   this.isHidden = false;
-  
-   
+
+
   /**
    * Whether this guy should be rendered with "negative" color, which is
    * useful for showing actors taking damage.
    * @type {boolean}
-   */ 
+   */
   this.renderNegativeColor = false;
 
   /**
@@ -142,7 +142,7 @@ ace.Actor = function(game, room, settings) {
   this.xOffset = 0;
   this.yOffset = 0;
   this.zOffset = 0;
-  
+
 
   /**
    * Which actor I am in the current list, useful for
@@ -225,12 +225,12 @@ ace.Actor.prototype.canWalk = function(dx, dy) {
 	}
 
   if (this.isInUnderworld()) {
-    
+
     var room = game.getRoom(x, y, this.z);
     if (!room.getTileAt(x, y).isWalkable) {
       return false;
     }
-    
+
     // This happens on the very edge of the map. Allow because otherwise
     // the localX, localY wraps around and you can never escape.
     var nextRoom = game.getRoom(x, y, this.z);
@@ -241,7 +241,7 @@ ace.Actor.prototype.canWalk = function(dx, dy) {
     var localY = y % ace.UNDERWORLD_ROOM_PIXEL_HEIGHT;
 		var tileX = Math.floor(localX / ace.TILE_SIZE);
 		var tileY = Math.floor(localY / ace.TILE_SIZE);
-		
+
 		// The avatar can walk through doors. Nobody else can.
 		if (this.name == 'Avatar') {
 			if (tileY == 5) {
@@ -255,15 +255,19 @@ ace.Actor.prototype.canWalk = function(dx, dy) {
     return (tileX > 1 && tileX < 14 && tileY > 1 && tileY < 9);
   }
 
-  var tile = this.getTileAt(x, y);
-  
+  var tile = this.getTileAt(x, y, this.z);
+
+  if (!tile) {
+    return true;
+  }
+
   if (this.isEnemy) {
     if (tile && tile.isWalkableByEnemies) {
       return true;
     }
     return false;
   }
-  
+
   if (tile && tile.isWalkable) {
     return true;
   }
@@ -285,7 +289,7 @@ ace.Actor.prototype.canFly = function(dx, dy) {
   if (dx < 0) x -= this.hitWidth / 2;
   if (dy > 0) y += this.hitHeight / 2;
   if (dy < 0) y -= this.hitHeight / 2;
-    
+
 	var localX = x % ace.UNDERWORLD_ROOM_PIXEL_WIDTH;
 	var localY = y % ace.UNDERWORLD_ROOM_PIXEL_HEIGHT;
 	var tileX = Math.floor(localX / ace.TILE_SIZE);
@@ -319,7 +323,7 @@ ace.Actor.prototype.isHitAt = function(screenX, screenY) {
   if (dX > this.hitWidth / 2) {
     return false;
   }
-  
+
   var dY = Math.abs(this.y - screenY);
   if (dY > this.hitHeight / 2) {
     return false;
@@ -448,17 +452,17 @@ ace.Actor.prototype.isOffScreen = function(opt_x, opt_y) {
     var baseX = Math.floor(x / ace.OVERWORLD_ROOM_PIXEL_WIDTH) *
         ace.OVERWORLD_ROOM_PIXEL_WIDTH;
     var baseY = Math.floor(y / ace.OVERWORLD_ROOM_PIXEL_HEIGHT) *
-        ace.OVERWORLD_ROOM_PIXEL_HEIGHT; 
-        
+        ace.OVERWORLD_ROOM_PIXEL_HEIGHT;
+
     var inset = 32;
-    
+
     if (x < baseX + inset ||
         y < baseY + inset ||
         x > baseX + ace.OVERWORLD_ROOM_PIXEL_WIDTH - inset ||
         y > baseY + ace.OVERWORLD_ROOM_PIXEL_HEIGHT - inset) {
-      return true;    
+      return true;
     }
-  
+
   } else {
 		var dx = ace.diff(x, game.avatar.x);
 		if (dx > ace.OVERWORLD_ROOM_PIXEL_WIDTH / 2) {
@@ -520,7 +524,7 @@ ace.Actor.prototype.isInUnderworld = function() {
  * @return {number} Distance in pixels.
  */
 ace.Actor.prototype.distance = function(other) {
-  return ace.distance(ace.diff(this.x, other.x), ace.diff(this.y, other.y)); 
+  return ace.distance(ace.diff(this.x, other.x), ace.diff(this.y, other.y));
 };
 
 
@@ -531,14 +535,14 @@ ace.Actor.prototype.distance = function(other) {
  */
 ace.Actor.prototype.standardCloudSpawnCheck = function(other) {
   if (this.cloudFrames) {
-  
+
   	// Do not start spawning if the avatar is right close to you.
   	if (this.distance(game.avatar) < 48 && this.cloudFrames == 1) {
   	  return true;
   	}
-  
+
     this.cloudFrames += .5;
-    
+
     if (this.cloudFrames > this.actorCountNumber + 1 + 1) {
     	this.cloudFrames = false;
     } else if (this.cloudFrames > this.actorCountNumber + 1) {

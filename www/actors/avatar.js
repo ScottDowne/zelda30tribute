@@ -465,14 +465,11 @@ ace.Avatar.prototype.onTick = function(game) {
 		// Also, of we have a zOffset, it means we're on some cave stairs.
 		// In such a case, don't allow walking.
 		if (isWalking && this.showSwordCount == 0 && this.zOffset >= 0) {
-			var tile = this.getTileAt(this.x, this.y, this.z);
+			//var tile = this.getTileAt(this.x, this.y, this.z);
 
 			// It's possible to ask for the tile off screen, so assume a normal
 			// walkspeed.
 			var walkSpeedFactor = 1;
-			if (tile && tile.walkSpeedFactor) {
-				walkSpeedFactor = tile.walkSpeedFactor;
-			}
 			var dx = Math.round(dx * walkSpeedFactor);
 			var dy = Math.round(dy * walkSpeedFactor);
 
@@ -554,27 +551,26 @@ ace.Avatar.prototype.onTick = function(game) {
 			// DO nothing.
 		} else {
 			this.z = game.getWorldZ(this.x, this.y);
-
-			var tile = this.getTileAt(this.x, this.y);
+//console.log(this.z);
+	//		var tile = this.getTileAt(this.x, this.y, this.z);
 			//if (upZ > this.z && this.canWalk(0, 16)) {
 			//	var dZ = (this.y % 16);
 			//	this.z += dZ;
 			//}
-			if (tile.name == 'ow_path') {
-			  var upZ = game.getWorldZ(this.x, this.y + 0);
+		//	if (!tile || tile.name == 'ow_path') {
+			  /*var upZ = game.getWorldZ(this.x, this.y + 0);
 			  var downZ = game.getWorldZ(this.x, this.y - 16);
 			  var factorZ = (this.y % 16) / 16;
 			  var dZ = upZ - downZ;
 			  if (downZ < upZ) {
 			    this.z = downZ + dZ * factorZ;
-			  }
-			}
+			  }*/
+			//}
 		}
 
 		if (isWalking) {
 			var framesPerStep = 8;
 			this.walkFrame = (this.walkFrame + 1) % framesPerStep;
-      console.log(this.walkFrame);
 			if (this.showSwordCount == 0) {
 				var walkNum = this.walkFrame;
 				var frameName = 'Walk' + this.facing + walkNum;
@@ -602,6 +598,7 @@ ace.Avatar.prototype.onTick = function(game) {
   } else if (isWalking) {
       this.draw('linkwalk' + (walkNum + 1));
   } else {
+    this.walkFrame = 0;
     this.draw('linkstand');
   }
 
