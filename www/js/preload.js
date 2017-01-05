@@ -426,7 +426,7 @@ function next() {
         return;
       }
       game = new ace.Game('game-container');
-      $('progress').innerHTML = '99%<p>GENERATING HYRULE...';
+      $('progress').innerHTML = '99%<p>GENERATING WORLD...';
     }
   }
 }
