@@ -113,22 +113,6 @@ ace.Avatar = function(game, room) {
   this.shieldDownCount = 0;
   this.swordLength = 33;
 
-  this.frames = {
-    'Walkdown0': { backgroundPosition: '0 0' },
-    'Walkdown1': { backgroundPosition: '0 -84px' },
-    'Walkleft0': { backgroundPosition: '-84px 0' },
-    'Walkleft1': { backgroundPosition: '-84px -84px' },
-    'Walkup0': { backgroundPosition: '-168px 0' },
-    'Walkup1': { backgroundPosition: '-168px -84px' },
-    'Walkright0': { backgroundPosition: '-252px 0' },
-    'Walkright1': { backgroundPosition: '-252px -84px' },
-
-    'Sworddown': { backgroundPosition: '0 -252px' },
-    'Swordleft': { backgroundPosition: '-84px -252px' },
-    'Swordup': { backgroundPosition: '-168px -252px' },
-    'Swordright': { backgroundPosition: '-252px -252px' }
-  }
-
   this.facing = 'down';
   this.action = 'Walk';
   this.walkFrame = 0;
@@ -547,20 +531,11 @@ ace.Avatar.prototype.onTick = function(game) {
 		}
 
 		// Handle walking on steep things.
-		if (this.isInUnderworld()) {
-			// DO nothing.
-		} else {
-			this.z = game.getWorldZ(this.x, this.y);
-		}
+	  this.z = game.getWorldZ(this.x, this.y);
 
 		if (isWalking) {
-			var framesPerStep = 8;
-			this.walkFrame = (this.walkFrame + 1) % framesPerStep;
-			if (this.showSwordCount == 0) {
-				var walkNum = this.walkFrame;
-				var frameName = 'Walk' + this.facing + walkNum;
-				//this.setFrame(frameName);
-			}
+			var framesPerStep = 16;
+			this.walkFrame = (this.walkFrame % framesPerStep) + 1;
 		}
 
 		// Assume the avatar is always the first one.
@@ -581,7 +556,7 @@ ace.Avatar.prototype.onTick = function(game) {
       this.yOffset += 1;
     }
   } else if (isWalking) {
-      this.draw('playerwalk' + (walkNum + 1));
+      this.draw('playerwalk' + Math.ceil(this.walkFrame/2));
   } else {
     this.walkFrame = 0;
     this.draw('playerstand');
