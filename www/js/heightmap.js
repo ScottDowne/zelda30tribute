@@ -189,7 +189,7 @@ ace.isWalkableByName = {
   'forest_rock_bl': false,
   'forest_dock': true,
   'forest_rock': false,
-  'ow_rock': true,
+  'ow_rock': false,
   'ow_path': true,
   'ow_rock_br': false,
   'ow_rock_bl': false,
@@ -256,60 +256,6 @@ ace.isWalkableByEnemiesByName = {
   'grave_pillar_tl': true,
   'grave_pillar_tr': true
 };
-
-ace.yOffsetsByName = {
-  /*'ow_tree_tr': -16,
-  'ow_tree_tl': -16,
-  'ow_ent': -16,
-  'forest_tree_tr': -16,
-  'forest_tree_tl': -16,
-  'forest_ent': -16,
-  'Jumper': 8,
-  'JumperTough': 8,
-
-  'forest_pillar_tl': -16,
-  'forest_pillar_tr': -16,
-  'forest_totem_t': -16,
-  'forest_totem_b': -16,
-
-  'ow_pillar_tl': -16,
-  'ow_pillar_tr': -16,
-  'ow_totem_t': -16,
-  'ow_totem_b': -16,
-
-  'grave_pillar_tl': -16,
-  'grave_pillar_tr': -16,
-  'grave_totem_t': -16,
-  'grave_totem_b': -16*/
-
-
-}
-ace.zOffsetsByName = {
-  /*'ow_tree_tr': 16,
-  'ow_tree_tl': 16,
-  'ow_ent': 16,
-  'forest_tree_tr': 16,
-  'forest_tree_tl': 16,
-  'forest_ent': 16,
-  'forest_pillar_tl': 16,
-  'forest_pillar_tr': 16,
-  'forest_totem_t': 18,
-  'forest_totem_b': 18,
-
-  'ow_pillar_tl': 16,
-  'ow_pillar_tr': 16,
-  'ow_totem_t': 18,
-  'ow_totem_b': 18,
-
-  'ow_sand': -16,
-  'ow_ground': -16,
-
-  'grave_pillar_tl': 16,
-  'grave_pillar_tr': 16,
-  'grave_totem_t': 18,
-  'grave_totem_b': 18*/
-}
-
 
 ace.isActorByName = {
   'Kraken': true,
