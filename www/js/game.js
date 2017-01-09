@@ -707,13 +707,12 @@ ace.Game.prototype.onTick = function(timeStamp) {
         for (var gridX = avatarGridX - xTileSeek; gridX < avatarGridX + xTileSeek; gridX++) {
           var tile = this.getTileAt(gridX, gridY, gridZ);
           if (tile && this.engine.spriteHasBeenRegistered(tile.name) && !ace[tile.name]) {
-            var shells = ace.shellsByTileName[tile.name];
-            var worldZ = (gridZ * 16) - 16;
+            var worldZ = (gridZ * 16);
             var worldX = (gridX * 16) + 8;
             var worldY = (gridY * 16) + 8;
             //console.log(gridZ, gridX, gridY);
             this.engine.drawSingleSprite(tile.name,
-                [worldX, worldY, worldZ], 0, shells);
+                [worldX, worldY, worldZ], 0, null);
           }
         }
       }
@@ -1208,39 +1207,15 @@ ace.Game.prototype.getTileAt = function(tileX, tileY, tileZ) {
     tileId = ace.tileMap[tileZ][tileY][tileX];
   }
 
-  // If we're in the underworld, everything is ground.
-  /*if (opt_z && opt_z < -100) {
-    var room = this.getRoom(worldX, worldY, opt_z);
-    return room.getTileAt(worldX, worldY);
-  }*/
-
-  // TODO(scott): Is this correct logic? Need to debug why I have some nulls
-  // in the tileMap in the first place.
-  //if (tileId == null) {
-  //  tileId = ace.tileIdsByName['ow_ground'];
-  //}
-
   var tileName = ace.tileNamesById[tileId];
-  var isWalkable = ace.isWalkableByName[tileName];
-  var isWalkableByEnemies = ace.isWalkableByEnemiesByName[tileName];
-  if (isWalkable === undefined) {
-    isWalkable = this.isActor_(tileName);
-  }
+  var isWalkable = ace.isWalkableByName[tileName] || false;
 
-  // Hardcoded weirdness around the "lake sand" above
-  // the entrance to dungeon 7.
-  /*if (worldX > 580 && worldX < 690 &&
-      worldY > 580 && worldY < 660) {
-    isWalkable = true;
-  }*/
-
-  var walkSpeedFactor = ace.walkSpeedFactorByTileName[tileName] || 1;
   return {
     'id': tileId,
     'name': tileName,
     'isWalkable': isWalkable,
-    'isWalkableByEnemies': isWalkableByEnemies,
-    'walkSpeedFactor': walkSpeedFactor
+    'isWalkableByEnemies': isWalkable,
+    'walkSpeedFactor': 1
   };
 
 };

@@ -534,7 +534,7 @@ ace.Avatar.prototype.onTick = function(game) {
 	  this.z = game.getWorldZ(this.x, this.y);
 
 		if (isWalking) {
-			var framesPerStep = 16;
+			var framesPerStep = 8;
 			this.walkFrame = (this.walkFrame % framesPerStep) + 1;
 		}
 

@@ -427,13 +427,9 @@ ace.EngineVoxel.prototype.setupWebGL_ = function() {
 
   this.registerVoxelSprite('playerstand', 'img/player.png', 0);
   this.registerVoxelSprite('playerwalk1', 'img/player.png', 1);
-  this.registerVoxelSprite('playerwalk2', 'img/player.png', 2);
-  this.registerVoxelSprite('playerwalk3', 'img/player.png', 3);
-  this.registerVoxelSprite('playerwalk4', 'img/player.png', 4);
-  this.registerVoxelSprite('playerwalk5', 'img/player.png', 5);
-  this.registerVoxelSprite('playerwalk6', 'img/player.png', 6);
-  this.registerVoxelSprite('playerwalk7', 'img/player.png', 7);
-  this.registerVoxelSprite('playerwalk8', 'img/player.png', 8);
+  this.registerVoxelSprite('playerwalk2', 'img/player.png', 0);
+  this.registerVoxelSprite('playerwalk3', 'img/player.png', 2);
+  this.registerVoxelSprite('playerwalk4', 'img/player.png', 0);
 
   this.registerVoxelSprite('linkstab', 'img/sprite_linkstab.png');
   this.registerVoxelSprite('linknose', 'img/sprite_linknose.png');

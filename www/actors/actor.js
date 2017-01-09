@@ -224,7 +224,7 @@ ace.Actor.prototype.canWalk = function(dx, dy) {
 		}
 	}
 
-  if (this.isInUnderworld()) {
+  /*if (this.isInUnderworld()) {
 
     var room = game.getRoom(x, y, this.z);
     if (!room.getTileAt(x, y).isWalkable) {
@@ -253,20 +253,19 @@ ace.Actor.prototype.canWalk = function(dx, dy) {
 			}
 	  }
     return (tileX > 1 && tileX < 14 && tileY > 1 && tileY < 9);
-  }
+  }*/
 
   var tile = this.getTileAt(x, y, this.z);
-
   if (!tile) {
     return true;
   }
 
-  if (this.isEnemy) {
+  /*if (this.isEnemy) {
     if (tile && tile.isWalkableByEnemies) {
       return true;
     }
     return false;
-  }
+  }*/
 
   if (tile && tile.isWalkable) {
     return true;
@@ -305,8 +304,8 @@ ace.Actor.prototype.canFly = function(dx, dy) {
  * @param {number} worldY The y position.
  * @return {ace.Tile} The tile there, or false if out of bounds.
  */
-ace.Actor.prototype.getTileAt = function(worldX, worldY, opt_z) {
-  return this.game.getTileAt(worldX, worldY, opt_z);
+ace.Actor.prototype.getTileAt = function(worldX, worldY, worldZ) {
+  return this.game.getTileAt(Math.floor(worldX / 16), Math.floor(worldY / 16), Math.floor(worldZ / 16));
 };
 
 
@@ -505,7 +504,7 @@ ace.Actor.prototype.draw = function (opt_name, opt_position, opt_rotZ, opt_rotX,
     var rotX2 = opt_rotX2 || this.rotX2;
     var renderNegativeColor = this.renderNegativeColor;
 
-    this.game.engine.drawSingleSprite(name, pos, rotZ, ace.shellsByTileName[name],
+    this.game.engine.drawSingleSprite(name, pos, rotZ, null,
         rotX, rotX2, renderNegativeColor);
   }
 };
