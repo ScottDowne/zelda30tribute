@@ -42,7 +42,7 @@ for (var z = 0; z < ace.tileMap.length; z++) {
 }
 
 ace.tileNamesById = {
-  '0': 'Nothing',
+  '0': 'nothing',
   '66': 'forest_rock_t',
   '3': 'forest_rock_tl',
   '75': 'forest_rock_tr',
@@ -60,25 +60,7 @@ ace.tileNamesById = {
 };
 
 ace.isWalkableByName = {
-  'Nothing': true,
+  'nothing': true,
   'ow_ground': true,
   'ow_path': true
-};
-
-ace.tileIdsByName = {
-  'Nothing': 0,
-  'forest_rock_t': 66,
-  'forest_rock_tl': 3,
-  'forest_rock_br': 5,
-  'forest_rock_bl': 8,
-  'forest_rock_tr': 75,
-  'forest_rock': 10,
-  'ow_rock_t': 55,
-  'ow_rock_br': 13,
-  'ow_rock_bl': 28,
-  'ow_rock_tl': 63,
-  'ow_rock_tr': 68,
-  'ow_rock': 16,
-  'ow_ground': 82,
-  'ow_path': 11
 };

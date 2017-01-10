@@ -277,7 +277,7 @@ ace.Avatar.prototype.onTick = function(game) {
     }
     console.log(commands);
   }
-  function correctTileMap(x, y) {
+  /*function correctTileMap(x, y) {
     var grid = game.getGridXY(x, y);
     var currentTile = ace.tileMap[grid.y][grid.x];
 
@@ -298,7 +298,7 @@ ace.Avatar.prototype.onTick = function(game) {
       commands += top.heightMapCorrections[key];
     }
     console.log(commands);
-  }
+  }*/
 
   // Assorted debug-only capabilities.
   if (('' + window.location).indexOf('debug') > -1) {
@@ -320,8 +320,8 @@ ace.Avatar.prototype.onTick = function(game) {
     }
 
     if (game.keyWasPressed('e')) {
-      correctTileMap(this.x + 16 * ace.xMultByFacing[this.facing],
-                     this.y + 16 * ace.yMultByFacing[this.facing]);
+      //correctTileMap(this.x + 16 * ace.xMultByFacing[this.facing],
+      //               this.y + 16 * ace.yMultByFacing[this.facing]);
     }
 
 

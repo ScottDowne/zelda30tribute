@@ -106,7 +106,7 @@ ace.DUNGEON_CANVAS_SIZE = 2048;
  * Metadata about items that can be picked up.
  */
 ace.selectableItemList = ['boomerang', 'bomb', 'bow', 'candle',
-    'whistle', 'meat', 'potion', 'wand'];  
+    'whistle', 'meat', 'potion', 'wand'];
 
 ace.itemInfoBySpriteName = {
 	'itemwoodensword': {isOneHanded:true},
@@ -366,7 +366,3 @@ ace.getRotZByFacing = function(facing) {
 ace.areOppositeFacings = function(facing1, facing2) {
   return (ace.oppositeFacings[facing1] == facing2);
 };
-
-
-
-

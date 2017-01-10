@@ -90,7 +90,7 @@ ace.Game = function(divId, opt_settings) {
    * A hash of sounds by sound name.
    */
   this.sounds = {}
-  this.loadSound('sword', 'sounds/sword.mp3');
+  /*this.loadSound('sword', 'sounds/sword.mp3');
   this.loadSound('boss1', 'sounds/boss1.mp3');
   this.loadSound('boss2', 'sounds/boss2.mp3');
   this.loadSound('swordshoot', 'sounds/swordshoot.mp3');
@@ -116,9 +116,9 @@ ace.Game = function(divId, opt_settings) {
   this.loadSound('flute', 'sounds/flute.mp3');
   this.loadSound('gameover', 'sounds/gameover.mp3');
   this.loadSound('health', 'sounds/health-loop.mp3');
-  this.loadSound('flute', 'sounds/flute.mp3');
+  this.loadSound('flute', 'sounds/flute.mp3');*/
 
-  this.playSound('overworld', {'loops': 9999999, volume:50});
+  //this.playSound('overworld', {'loops': 9999999, volume:50});
 
   /**
    * We'll keep track of whether it's an "blink" frame, which will

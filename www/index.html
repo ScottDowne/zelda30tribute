@@ -2,28 +2,6 @@
 <html>
 <head>
 <title>Game stuff</title>
-<link REL="shortcut icon" HREF="img/favicon.gif" TYPE="image/x-icon">
-<link rel="icon" sizes="192x192" href="img/icon-mobile-192.png">
-<link rel="apple-touch-icon" href="img/icon-mobile.png">
-<link rel="apple-touch-icon" sizes="72x72" href="img/icon-mobile.png">
-<link rel="apple-touch-icon" sizes="114x114" href="img/icon-mobile.png">
-<link REL="apple-touch-icon" sizes="144x144" HREF="img/icon-mobile.png">
-<meta name="apple-mobile-web-app-title" content="Zelda Tribute">
-<meta name="application-name" content="Zelda Tribute">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0,user-scalable=no">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="language" content="en" />
-<meta name="description" content="A fan tribute to the greatest console game of all time, the NES Legend of Zelda.
-This open source project uses WebGL and voxels rendering to create a pixel-perfect replica of the original, all in Javascript."></meta>
-<meta name="keywords" content="Legend of Zelda,Zelda,Tribute,30,Thirty,Voxel,WebGL"></meta>
-<meta property="og:title" content="Zelda 30 Year Tribute" />
-<meta property="og:site_name" content="Zelda 30 Year Tribute" />
-<meta property="og:description" content="A fan tribute to the greatest console game of all time, the NES Legend of Zelda.
-This open source project uses WebGL and voxels rendering to create a pixel-perfect replica of the original, all in Javascript." />
-<meta property="og:url" content="http://zelda30tribute.com" />
-<meta property="og:image" content="http://zelda30tribute.com/img/logo-share.png" />
 
 <script id="vshader" type="x-shader/x-vertex">
 #ifdef GL_ES
@@ -901,11 +879,6 @@ canvas {
 
 
 <script>
-/* UNCOMMENT TO TEST MOBILE
-window.onerror = function(e) {
-  alert(e);
-}
-*/
 var game;
 var assetsReady = false;
 
@@ -921,17 +894,5 @@ function init() {
 
 </script>
 <script src="js/preload.js"></script>
-
-
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-76008504-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
 </body>
 </html>
